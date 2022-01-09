@@ -49,7 +49,7 @@
 
 %%
 program:
-        VAR {printf("zmienne\n");} declarations _BEGIN {printf("start\n");} commands END {printf("koniec\n");}
+        VAR declarations _BEGIN commands END
     |   _BEGIN commands END
 ;
 declarations:
@@ -66,7 +66,7 @@ command:
         identifier ASSIGN expression ';'
     |   IF condition THEN commands ELSE commands ENDIF
     |   IF condition THEN commands ENDIF
-    |   WHILE {count++;} condition DO {printf("DO %d\n", count);} commands ENDWHILE {printf("ENDWHILE %d\n", count);}
+    |   WHILE condition DO commands ENDWHILE
     |   REPEAT commands UNTIL condition ';'
     |   FOR pidentifier FROM value TO value DO commands ENDFOR
     |   FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
