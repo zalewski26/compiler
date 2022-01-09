@@ -1,12 +1,34 @@
 %{
     #include <iostream>
-    #include <string>
-    #include <cmath>
-    #include <climits>
+    #include <stdlib.h> /* For malloc in symbol table */
+    #include <string.h> /* For strcmp in symbol table */
+    #include <stdio.h> /* For error messages */
+    #include "ST.h"
     // #define YYDEBUG 1
     int yylex();
     void yyerror(const char *);
     int count = 0;
+
+    void install (char* sym_name){
+        symrec* s;
+        s = getsym(sym_name);
+        if (s == 0)
+            s = putsym(sym_name);
+        else{
+            // errors++;
+            printf("%s is already defined\n", sym_name);
+        }
+    }
+
+    void context_check(char* sym_name){
+        symrec* identifier;
+        identifier = getsym(sym_name);
+        if (identifier == 0){
+            // errors++;
+            printf("%s", sym_name);
+            printf(" is an undeclared identifier\n");
+        }
+    }
 %}
 
 %union semrec /* The Semantic Records */
@@ -31,9 +53,9 @@ program:
     |   _BEGIN commands END
 ;
 declarations:
-        declarations ',' pidentifier
+        declarations ',' pidentifier    {install($3);}
     |   declarations ',' pidentifier '[' num ':' num ']'
-    |   pidentifier
+    |   pidentifier {install($1);}
     |   pidentifier '[' num ':' num ']'
 ;
 commands:
@@ -72,7 +94,7 @@ value:
     |   identifier
 ;
 identifier:
-        pidentifier
+        pidentifier  {context_check($1);}
     |   pidentifier '[' pidentifier ']'
     |   pidentifier '[' num ']'
 ;
