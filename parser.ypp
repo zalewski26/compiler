@@ -1,0 +1,88 @@
+%{
+    #include <iostream>
+    #include <string>
+    #include <cmath>
+    #include <climits>
+    // #define YYDEBUG 1
+    int yylex();
+    void yyerror(const char *);
+    int count = 0;
+%}
+
+%union semrec /* The Semantic Records */
+{
+    int num; /* Integer values */
+    char* pidentifier; /* Identifiers */
+    struct lbs* lbls; /* For backpatching */
+}
+
+%token VAR _BEGIN END ASSIGN IF THEN ELSE ENDIF
+%token WHILE DO ENDDO ENDWHILE FOR FROM TO DOWNTO ENDFOR REPEAT UNTIL
+%token READ WRITE
+%token PLUS MINUS TIMES DIV MOD
+%token EQ NEQ LE GE LEQ GEQ
+
+%token <pidentifier> pidentifier
+%token <num> num
+
+%%
+program:
+        VAR {printf("zmienne\n");} declarations _BEGIN {printf("start\n");} commands END {printf("koniec\n");}
+    |   _BEGIN commands END
+;
+declarations:
+        declarations ',' pidentifier
+    |   declarations ',' pidentifier '[' num ':' num ']'
+    |   pidentifier
+    |   pidentifier '[' num ':' num ']'
+;
+commands:
+        commands command
+    |   command
+;
+command:
+        identifier ASSIGN expression ';'
+    |   IF condition THEN commands ELSE commands ENDIF
+    |   IF condition THEN commands ENDIF
+    |   WHILE {count++;} condition DO {printf("DO %d\n", count);} commands ENDWHILE {printf("ENDWHILE %d\n", count);}
+    |   REPEAT commands UNTIL condition ';'
+    |   FOR pidentifier FROM value TO value DO commands ENDFOR
+    |   FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
+    |   READ identifier ';'
+    |   WRITE value ';'
+;
+expression:
+        value
+    |   value PLUS value
+    |   value MINUS value
+    |   value TIMES value
+    |   value DIV value
+    |   value MOD value
+;
+condition:
+        value EQ value
+    |   value NEQ value
+    |   value LE value
+    |   value GE value
+    |   value LEQ value
+    |   value GEQ value
+;
+value:
+        num
+    |   identifier
+;
+identifier:
+        pidentifier
+    |   pidentifier '[' pidentifier ']'
+    |   pidentifier '[' num ']'
+;
+%%
+
+int main(){
+    // yydebug = 1;
+    return yyparse();
+}
+
+void yyerror(const char* err){
+    std::cout << "Error: " << err << std::endl;
+}

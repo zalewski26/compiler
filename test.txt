@@ -1,0 +1,13 @@
+VAR
+    raz
+BEGIN
+    raz ASSIGN 3;
+    WHILE raz GEQ 2
+    DO 
+        raz ASSIGN 2;
+        WHILE raz GEQ 1
+        DO
+            raz ASSIGN 1;
+        ENDWHILE
+    ENDWHILE
+END
