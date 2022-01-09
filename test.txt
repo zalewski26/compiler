@@ -1,7 +1,9 @@
 VAR
-    raz
+    raz,dwa,raz
 BEGIN
     raz ASSIGN 3;
+    dwa ASSIGN 4;
+    trzy ASSIGN 5;
     WHILE raz GEQ 2
     DO 
         raz ASSIGN 2;

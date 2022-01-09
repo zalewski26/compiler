@@ -1,0 +1,92 @@
+diff --git a/ST.h b/ST.h
+index eb3bbce..cdca3d7 100644
+--- a/ST.h
++++ b/ST.h
+@@ -1,29 +1,35 @@
+ struct symrec {
+     char *name; /* name of symbol */
+-    int offset; /* data offset */
+-    struct symrec *next; /* link field */
++    int pos;
++    bool inRegister;
+ };
+-
+ typedef struct symrec symrec;
+-symrec *identifier;
+-symrec *sym_table = (symrec *)0;
++
++int registers[8];
++int registerCounter = 2;
+ 
+ symrec* putsym (char *sym_name){
+     symrec* ptr;
+     ptr = (symrec *) malloc (sizeof(symrec));
+     ptr->name = (char *) malloc (strlen(sym_name)+1);
+     strcpy (ptr->name, sym_name);
+-    // ptr->offset = data_location();
+-    ptr->next = (struct symrec *)sym_table;
+-    sym_table = ptr;
++    ptr->pos = registerCounter;
++    ptr->inRegister = true;
++    registers[registerCounter++] = ptr;
+     return ptr;
+ }
+ 
+ symrec * getsym (char *sym_name){
+     symrec *ptr;
+-    for ( ptr = sym_table; ptr != (symrec *) 0; ptr = (symrec *)ptr->next ){
+-        if (strcmp (ptr->name,sym_name) == 0)
+-            return ptr;
++    for (int i = 2; i < std::min(registerCounter, 8); i++){
++        if (strcmp(registers[i]->name, sym_name) == 0)
++            return registers[i];
+     }
+     return 0;
++}
++
++void printRegs(){
++    for (int i = 0; i < std::min(registerCounter, 8); i++){
++        printf("register[%d]: name = %s, pos = %d, inRegister = %d\n", i, registers[i]->name, registers[i]->pos, registers[i]->inRegister);
++    }
+ }
+\ No newline at end of file
+diff --git a/main b/main
+index 002e391..a9d43c1 100755
+Binary files a/main and b/main differ
+diff --git a/parser.ypp b/parser.ypp
+index 2567c26..fe49040 100644
+--- a/parser.ypp
++++ b/parser.ypp
+@@ -49,7 +49,7 @@
+ 
+ %%
+ program:
+-        VAR {printf("zmienne\n");} declarations _BEGIN {printf("start\n");} commands END {printf("koniec\n");}
++        VAR declarations _BEGIN commands END
+     |   _BEGIN commands END
+ ;
+ declarations:
+@@ -66,7 +66,7 @@ command:
+         identifier ASSIGN expression ';'
+     |   IF condition THEN commands ELSE commands ENDIF
+     |   IF condition THEN commands ENDIF
+-    |   WHILE {count++;} condition DO {printf("DO %d\n", count);} commands ENDWHILE {printf("ENDWHILE %d\n", count);}
++    |   WHILE condition DO commands ENDWHILE
+     |   REPEAT commands UNTIL condition ';'
+     |   FOR pidentifier FROM value TO value DO commands ENDFOR
+     |   FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
+diff --git a/test.txt b/test.txt
+index b09bc62..d92bd46 100644
+--- a/test.txt
++++ b/test.txt
+@@ -1,7 +1,9 @@
+ VAR
+-    raz
++    raz,dwa,raz,trzy
+ BEGIN
+     raz ASSIGN 3;
++    trzy ASSIGN 3;
++    cztery ASSIGN 3;
+     WHILE raz GEQ 2
+     DO 
+         raz ASSIGN 2;

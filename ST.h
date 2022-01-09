@@ -1,12 +1,16 @@
 struct symrec {
     char *name; /* name of symbol */
     int offset; /* data offset */
+    int pos;
+    bool inRegister;
     struct symrec *next; /* link field */
 };
 
 typedef struct symrec symrec;
-symrec *identifier;
 symrec *sym_table = (symrec *)0;
+
+// int registers[8];
+int registerCounter = 1;
 
 symrec* putsym (char *sym_name){
     symrec* ptr;
@@ -16,6 +20,9 @@ symrec* putsym (char *sym_name){
     // ptr->offset = data_location();
     ptr->next = (struct symrec *)sym_table;
     sym_table = ptr;
+    ptr->pos = registerCounter;
+    ptr->inRegister = true;
+    registerCounter = (registerCounter == 8 ? 1 : registerCounter+1);
     return ptr;
 }
 
@@ -27,3 +34,11 @@ symrec * getsym (char *sym_name){
     }
     return 0;
 }
+
+void printSym(){
+    symrec *ptr;
+    for ( ptr = sym_table; ptr != (symrec *) 0; ptr = (symrec *)ptr->next ){
+        printf("name = %s, pos = %d, inRegister = %d\n", ptr->name, ptr->pos, ptr->inRegister);
+    }
+}
+
