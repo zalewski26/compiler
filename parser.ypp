@@ -3,63 +3,13 @@
     #include <stdlib.h> /* For malloc in symbol table */
     #include <string.h> /* For strcmp in symbol table */
     #include <stdio.h> /* For error messages */
+    #include "components/program.cpp"
     #include <stack>
-    #include "ST.h"
-    // #include "CG.h"
     // #define YYDEBUG 1
     int yylex();
     void yyerror(const char *);
-    int count = 0;
 
-    void install (char* sym_name){
-        symrec* s;
-        s = getsym(sym_name);
-        if (s == 0){
-            s = putsym(sym_name);
-            // printf("STORE %d\n", s->pos);
-        }
-        else{
-            // errors++;
-            printf("error: %s is already defined\n", sym_name);
-        }
-    }
-
-    std::stack<symrec*> identifiers;
-    std::stack<int> values;
-
-    void context_check(char* sym_name){
-        symrec* identifier;
-        identifier = getsym(sym_name);
-        if (identifier == 0){
-            // errors++;
-            printf("error: %s is an undeclared identifier\n", sym_name);
-        }
-        else {
-            identifiers.push(identifier);
-        }
-    }
-
-    void assign(){
-        // printf("załaduj %d do a{\n", values.top());
-        printf("RESET a\n");
-        int value = values.top();
-        if (std::abs(value) > 10){
-
-        }
-        else {
-            const char* cmd = (value > 0 ? "INC" : "DEC"); 
-            for (int i = 0; i < value; i++){
-                printf("%s a\n", cmd);
-            }
-        }
-        printf("RESET h\n");
-        for (int i = 0; i < identifiers.top()->pos; i++){
-            printf("INC h\n");
-        }
-        printf("STORE h\n");
-        identifiers.pop();
-        values.pop();
-    }
+    Program program;
 %}
 
 %union semrec /* The Semantic Records */
@@ -76,19 +26,18 @@
 %left TIMES DIV MOD
 %token EQ NEQ LE GE LEQ GEQ
 
-
 %token <pidentifier> pidentifier
 %token <num> num
 
 %%
 program:
-        VAR declarations _BEGIN commands END {/*printSym();*/printf("RESET h\nINC h\nINC h\nLOAD h\nPUT\n"); printf("HALT\n");}
+        VAR declarations _BEGIN commands END
     |   _BEGIN commands END 
 ;
 declarations:
-        declarations ',' pidentifier    {install($3);}
+        declarations ',' pidentifier {program.install(std::string($3));}
     |   declarations ',' pidentifier '[' num ':' num ']'
-    |   pidentifier {install($1);}
+    |   pidentifier {program.install(std::string($1));}
     |   pidentifier '[' num ':' num ']'
 ;
 commands:
@@ -96,7 +45,7 @@ commands:
     |   command
 ;
 command:
-        identifier ASSIGN expression ';' {assign();}
+        identifier ASSIGN expression ';' 
     |   IF condition THEN commands ELSE commands ENDIF
     |   IF condition THEN commands ENDIF
     |   WHILE condition DO commands ENDWHILE
@@ -108,11 +57,11 @@ command:
 ;
 expression:
         value
-    |   value PLUS value {int temp = values.top(); values.pop(); temp += values.top(); values.pop(); values.push(temp);}
-    |   value MINUS value {int temp = -values.top(); values.pop(); temp += values.top(); values.pop(); values.push(temp);}
-    |   value TIMES value {int temp = values.top(); values.pop(); temp *= values.top(); values.pop(); values.push(temp);}
-    |   value DIV value {int temp = values.top(); values.pop(); temp = values.top() / temp; values.pop(); values.push(temp);}
-    |   value MOD value {int temp = values.top(); values.pop(); temp = values.top() % temp; values.pop(); values.push(temp);}
+    |   value PLUS value
+    |   value MINUS value 
+    |   value TIMES value 
+    |   value DIV value
+    |   value MOD value 
 ;
 condition:
         value EQ value
@@ -123,11 +72,11 @@ condition:
     |   value GEQ value
 ;
 value:
-        num     {values.push($1);}
+        num    
     |   identifier
 ;
 identifier:
-        pidentifier  {context_check($1);}
+        pidentifier {program.context_check(std::string($1));}
     |   pidentifier '[' pidentifier ']'
     |   pidentifier '[' num ']'
 ;
