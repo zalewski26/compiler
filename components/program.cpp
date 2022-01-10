@@ -1,17 +1,5 @@
 #include <iostream>
-#include <vector>
-#include <string>
-#include "declaration.cpp"
-
-class Program {
-private:
-    std::vector<Declaration*> declarations;
-    Declaration* getDeclaration(std::string name);
-    void addDeclaration(std::string name);
-public:
-    void install(std::string name);
-    void context_check(std::string name);
-};
+#include "types.hpp"
 
 Declaration* Program::getDeclaration(std::string name){
     for (auto i : declarations){
@@ -33,8 +21,22 @@ void Program::install (std::string name){
         std::cout << "error: " << name << " is already defined\n";
 }
 
-void Program::context_check(std::string name){
+int Program::context_check(std::string name){
     Declaration* d = getDeclaration(name);
-    if (d == 0)
+    if (d == 0){
         std::cout << "error: " << name << " is an undeclared identifier\n";
+        return 0;
+    }
+    return 1;
+}
+
+void Program::printAll(){
+    std::cout << "Declarations:\n";
+    for (auto i : declarations){
+        std::cout << "name: " << i->name << " position: " << i->pos << " inRegister: " << i->inRegister << "\n";
+    }
+    // std::cout << "Commands:\n";
+    // for (auto i : commands){
+    //     std::cout << i->val << "\n";
+    // }
 }

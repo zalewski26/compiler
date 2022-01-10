@@ -1,5 +1,6 @@
 %option noyywrap
 %{
+    #include "components/types.hpp"
     #include "parser.tab.hpp"
     #include <string.h> 
     #include <stdlib.h> 
