@@ -4,6 +4,7 @@
     #include <string.h> /* For strcmp in symbol table */
     #include <stdio.h> /* For error messages */
     #include "ST.h"
+    // #include "CG.h"
     // #define YYDEBUG 1
     int yylex();
     void yyerror(const char *);
@@ -20,6 +21,8 @@
         }
     }
 
+    int last_identifier;
+
     void context_check(char* sym_name){
         symrec* identifier;
         identifier = getsym(sym_name);
@@ -29,8 +32,13 @@
             printf(" is an undeclared identifier\n");
         }
         else {
-            
+            last_identifier = identifier->pos;
         }
+    }
+
+    void assign(){
+        printf("załaduj do a\n");
+        printf("SWAP %d\n", last_identifier);
     }
 %}
 
@@ -66,7 +74,7 @@ commands:
     |   command
 ;
 command:
-        identifier ASSIGN expression ';'
+        identifier ASSIGN expression ';' {assign();}
     |   IF condition THEN commands ELSE commands ENDIF
     |   IF condition THEN commands ENDIF
     |   WHILE condition DO commands ENDWHILE
@@ -93,7 +101,7 @@ condition:
     |   value GEQ value
 ;
 value:
-        num
+        num     
     |   identifier
 ;
 identifier:

@@ -1,0 +1,6 @@
+VAR
+    raz,dwa,raz
+BEGIN
+    raz ASSIGN 3;
+    dwa ASSIGN 4;
+END

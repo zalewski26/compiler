@@ -37,6 +37,7 @@ symrec * getsym (char *sym_name){
 
 void printSym(){
     symrec *ptr;
+    printf("------------------\n");
     for ( ptr = sym_table; ptr != (symrec *) 0; ptr = (symrec *)ptr->next ){
         printf("name = %s, pos = %d, inRegister = %d\n", ptr->name, ptr->pos, ptr->inRegister);
     }
