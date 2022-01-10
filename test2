@@ -1,6 +1,9 @@
 VAR
-    raz,dwa,raz
+    x,y,z,p,q
 BEGIN
-    raz ASSIGN 3;
-    dwa ASSIGN 4;
+    x ASSIGN 3 PLUS 4;
+    y ASSIGN 4 MINUS 3;
+    z ASSIGN 4 TIMES 2;
+    p ASSIGN 6 DIV 3;
+    q ASSIGN 9 MOD 4;
 END

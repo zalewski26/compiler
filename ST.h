@@ -10,7 +10,7 @@ typedef struct symrec symrec;
 symrec *sym_table = (symrec *)0;
 
 // int registers[8];
-int registerCounter = 1;
+int memoryCounter = 0;
 
 symrec* putsym (char *sym_name){
     symrec* ptr;
@@ -20,9 +20,9 @@ symrec* putsym (char *sym_name){
     // ptr->offset = data_location();
     ptr->next = (struct symrec *)sym_table;
     sym_table = ptr;
-    ptr->pos = registerCounter;
-    ptr->inRegister = true;
-    registerCounter = (registerCounter == 8 ? 1 : registerCounter+1);
+    ptr->pos = memoryCounter;
+    ptr->inRegister = false;
+    memoryCounter++;
     return ptr;
 }
 
