@@ -40,21 +40,23 @@
     }
 
     void assign(){
-        printf("załaduj %d do a{\n", values.top());
-        printf("\tINC\n");
-        int temp = values.top();
-        std::stack<int> tempStack;
-        while (temp > 1){
-            tempStack.push(temp % 2);
-            temp /= 2;
+        // printf("załaduj %d do a{\n", values.top());
+        printf("RESET a\n");
+        int value = values.top();
+        if (std::abs(value) > 10){
+
         }
-        while (!tempStack.empty()){
-            printf("\tSHIFT\n");
-            if (tempStack.top() == 1)
-                printf("\tINC\n");
-            tempStack.pop();
+        else {
+            const char* cmd = (value > 0 ? "INC" : "DEC"); 
+            for (int i = 0; i < value; i++){
+                printf("%s a\n", cmd);
+            }
         }
-        printf("}\nSTORE %d\n", identifiers.top()->pos);
+        printf("RESET h\n");
+        for (int i = 0; i < identifiers.top()->pos; i++){
+            printf("INC h\n");
+        }
+        printf("STORE h\n");
         identifiers.pop();
         values.pop();
     }
@@ -70,15 +72,17 @@
 %token VAR _BEGIN END ASSIGN IF THEN ELSE ENDIF
 %token WHILE DO ENDDO ENDWHILE FOR FROM TO DOWNTO ENDFOR REPEAT UNTIL
 %token READ WRITE
-%token PLUS MINUS TIMES DIV MOD
+%left PLUS MINUS 
+%left TIMES DIV MOD
 %token EQ NEQ LE GE LEQ GEQ
+
 
 %token <pidentifier> pidentifier
 %token <num> num
 
 %%
 program:
-        VAR declarations _BEGIN commands END {printSym();}
+        VAR declarations _BEGIN commands END {/*printSym();*/printf("RESET h\nINC h\nINC h\nLOAD h\nPUT\n"); printf("HALT\n");}
     |   _BEGIN commands END 
 ;
 declarations:

@@ -1,6 +1,6 @@
 struct symrec {
     char *name; /* name of symbol */
-    int offset; /* data offset */
+    // int offset; /* data offset */
     int pos;
     bool inRegister;
     struct symrec *next; /* link field */
