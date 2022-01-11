@@ -147,14 +147,28 @@ public:
 };
 
 class ForToCommand : public Command{
+private:
+    std::string name;
+    Value* val1;
+    Value* val2;
+    CommandSet* cSet;
+
 public:
-    ForToCommand(std::string, Value*, Value*, CommandSet*){}
+    ForToCommand(std::string name, Value* v1, Value* v2, CommandSet* cSet)
+        : name(name), val1(v1), val2(v2), cSet(cSet){}
     void run() override;
 };
 
 class ForDownToCommand : public Command{
+private:
+    std::string name;
+    Value* val1;
+    Value* val2;
+    CommandSet* cSet;
+
 public:
-    ForDownToCommand(std::string, Value*, Value*, CommandSet*){}
+    ForDownToCommand(std::string name, Value* v1, Value* v2, CommandSet* cSet)
+        : name(name), val1(v1), val2(v2), cSet(cSet){}
     void run() override;
 };
 

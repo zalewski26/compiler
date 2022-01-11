@@ -1,10 +1,8 @@
 VAR
-    n,x
+    x,i
 BEGIN
     READ x;
-    WHILE x GEQ 0
-    DO
-        WRITE x;
-        x ASSIGN x MINUS 1;
-    ENDWHILE
+    FOR i FROM 5 DOWNTO x DO
+        WRITE i;
+    ENDFOR 
 END
