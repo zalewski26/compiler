@@ -8,13 +8,13 @@
     #include <stdlib.h> /* For malloc in symbol table */
     #include <string.h> /* For strcmp in symbol table */
     #include <stdio.h> /* For error messages */
-    #include "components/program.cpp"
     #include <stack>
+    #include "components/types.hpp"
     // #define YYDEBUG 1
     int yylex();
     void yyerror(const char *);
 
-    Program program;
+    Program* program;
 %}
 
 %union semrec /* The Semantic Records */
@@ -27,7 +27,8 @@
     Condition* cond;
     Expression* exp;
     Command* cmd;
-    CommandSet* set;
+    CommandSet* cSet;
+    IdentifiersSet* dSet;
 }
 
 %token VAR _BEGIN END ASSIGN IF THEN ELSE ENDIF
@@ -45,18 +46,19 @@
 %type <cond> condition
 %type <exp> expression
 %type <cmd> command
-%type <set> commands
+%type <cSet> commands
+%type <dSet> declarations
 
 %%
 program:
-        VAR declarations _BEGIN commands END {program.printAll();}
-    |   _BEGIN commands END 
+        VAR declarations _BEGIN commands END    {program = new Program($2, $4); program->printAll();}
+    |   _BEGIN commands END                     {program = new Program($2);}
 ;
 declarations:
-        declarations ',' pidentifier {program.install(std::string($3));}
-    |   declarations ',' pidentifier '[' num ':' num ']'
-    |   pidentifier {program.install(std::string($1));}
-    |   pidentifier '[' num ':' num ']'
+        declarations ',' pidentifier                        {$1->push_back(new Pidentifier($3)); $$ = $1;}
+    |   declarations ',' pidentifier '[' num ':' num ']'    {$1->push_back(new Pidentifier($3)); $$ = $1;}
+    |   pidentifier                                         {IdentifiersSet* set = new IdentifiersSet(); set->push_back(new Pidentifier($1)); $$ = set;}
+    |   pidentifier '[' num ':' num ']'                     {IdentifiersSet* set = new IdentifiersSet(); set->push_back(new Pidentifier($1)); $$ = set;}
 ;
 commands:
         commands command        {$1->push_back($2); $$ = $1;}
@@ -76,10 +78,10 @@ command:
 expression:
         value               {$$ = new SingleExpression($1);}
     |   value PLUS value    {$$ = new BinaryExpression($1, $3, 0);}
-    |   value MINUS value   {$$ = new BinaryExpression($1, $3, 0);}
-    |   value TIMES value   {$$ = new BinaryExpression($1, $3, 0);}
-    |   value DIV value     {$$ = new BinaryExpression($1, $3, 0);}
-    |   value MOD value     {$$ = new BinaryExpression($1, $3, 0);}
+    |   value MINUS value   {$$ = new BinaryExpression($1, $3, 1);}
+    |   value TIMES value   {$$ = new BinaryExpression($1, $3, 2);}
+    |   value DIV value     {$$ = new BinaryExpression($1, $3, 3);}
+    |   value MOD value     {$$ = new BinaryExpression($1, $3, 4);}
 ;
 condition:
         value EQ value  {$$ = new Condition($1, $3, 0);}
@@ -94,9 +96,9 @@ value:
     |   identifier  {$$ = new idValue($1);}
 ;
 identifier:
-        pidentifier {if (program.context_check(std::string($1))){$$ = new Pidentifier(std::string($1));};}
-    |   pidentifier '[' pidentifier ']' {if (program.context_check(std::string($1))){$$ = new Pidentifier(std::string($1));};}
-    |   pidentifier '[' num ']' {if (program.context_check(std::string($1))){$$ = new Pidentifier(std::string($1));};}
+        pidentifier                         {$$ = new Pidentifier(std::string($1));}
+    |   pidentifier '[' pidentifier ']'     {$$ = new Pidentifier(std::string($1));}
+    |   pidentifier '[' num ']'             {$$ = new Pidentifier(std::string($1));}
 ;
 %%
 

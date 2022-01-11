@@ -30,13 +30,26 @@ int Program::context_check(std::string name){
     return 1;
 }
 
+Program::Program(IdentifiersSet* ids, CommandSet* commands) : commands(commands) {
+    for (auto i : *ids){
+        install(i->name);
+    }
+}
+
+void Program::compile(){
+    for (const auto &command : *this->commands) {
+        command->run();
+    }
+}
+
 void Program::printAll(){
     std::cout << "Declarations:\n";
     for (auto i : declarations){
         std::cout << "name: " << i->name << " position: " << i->pos << " inRegister: " << i->inRegister << "\n";
     }
-    // std::cout << "Commands:\n";
-    // for (auto i : commands){
-    //     std::cout << i->val << "\n";
-    // }
+    std::cout << "Commands:\n";
+    for (auto &i : *commands){
+        std::cout << i << "\n";
+    }
 }
+

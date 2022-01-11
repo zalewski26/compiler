@@ -1,32 +1,37 @@
-#include <string>
+#include "types.hpp"
 
-class Pidentifier {
-public:
-    std::string val;
-    Pidentifier(std::string name) : val(name) {};
-};
+void AssignCommand::run(){
 
-class Num{
-public:
-    std::string val;
-    Num(int value) : val(std::to_string(value)) {};
-};
+}
 
-class Identifier{
-public:
-    std::string val;
-    Identifier(Pidentifier* pid){ val = pid->val;}
-};
+void IfElseCommand::run(){
 
-class Value{
-public:
-    std::string val;
-    Value(Num* num) { val = num->val;}
-    Value(Identifier* i) { val = i->val;}
-};
+}
 
-class Command {
-public:
-    std::string val;
-    Command(Value* v) {val = v->val;};
-};
+void IfCommand::run(){
+
+}
+
+void WhileCommand::run(){
+
+}
+
+void RepeatCommand::run(){
+
+}
+
+void ForToCommand::run(){
+
+}
+
+void ForDownToCommand::run(){
+
+}
+
+void ReadCommand::run(){
+
+}
+
+void WriteCommand::run(){
+    
+}
