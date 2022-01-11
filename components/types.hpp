@@ -113,17 +113,22 @@ public:
 
 /********** EXPRESSION ***************/
 class Expression{
-
+public:
+    virtual void load(){};
 };
 
 class SingleExpression : public Expression{
+private:
+    Value* val;
 public:	
-    SingleExpression(Value* v) {}
+    SingleExpression(Value* v) : val(v) {}
+    void load() override;
 };
 
 class BinaryExpression : public Expression{
 public:
     BinaryExpression(Value* v1, Value* v2, int type) {}
+    void load() override;
 };
 
 
@@ -136,17 +141,22 @@ public:
 
 /********** VALUE ***************/
 class Value{
-
+public:
+    virtual void load(){};
 };
 
 class idValue : public Value{
+private:
+    Identifier* ident;
 public:
-    idValue(Identifier* i) {};
+    idValue(Identifier* ident) : ident(ident) {};
+    void load() override;
 };
 
 class numValue : public Value{
 public:
     numValue(int num) {};
+    void load() override;
 };
 
 

@@ -3,8 +3,8 @@
 void AssignCommand::run(Program* p){
     Declaration* d = p->context_check(ident->name);
     if (d != 0){
-        printf("LOAD EXPRESSION TO A:\n");
-        
+        // printf("LOAD EXPRESSION TO A:\n");
+        exp->load();
 
         if (p->addrVal < d->pos){
             while (p->addrVal < d->pos){

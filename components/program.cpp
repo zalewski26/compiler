@@ -37,7 +37,10 @@ Program::Program(IdentifiersSet* ids, CommandSet* commands) : commands(commands)
 }
 
 void Program::compile(){
+    printf("RESET %c\n", acc);
     printf("RESET %c\n", addr);
+    accVal = 0;
+    addrVal = 0;
     for (const auto &command : *this->commands) {
         command->run(this);
     }
