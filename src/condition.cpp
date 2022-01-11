@@ -9,30 +9,30 @@ int Condition::load(){
     output->sub('c');
     switch (type){
         case Conditions::EQ:
-            output->placeholder("JNEG");
-            output->placeholder("JPOS");
+            output->condJumpPlaceholder("JNEG");
+            output->condJumpPlaceholder("JPOS");
             result = 2;
             break;
         case Conditions::NEQ:
-            output->placeholder("JZERO");
+            output->condJumpPlaceholder("JZERO");
             result = 1;
             break;
         case Conditions::LE:
-            output->placeholder("JZERO");
-            output->placeholder("JPOS");
+            output->condJumpPlaceholder("JZERO");
+            output->condJumpPlaceholder("JPOS");
             result = 2;
             break;
         case Conditions::GE:
-            output->placeholder("JZERO");
-            output->placeholder("JNEG");
+            output->condJumpPlaceholder("JZERO");
+            output->condJumpPlaceholder("JNEG");
             result = 2;
             break;
         case Conditions::LEQ:
-            output->placeholder("JPOS");
+            output->condJumpPlaceholder("JPOS");
             result = 1;
             break;
         case Conditions::GEQ:
-            output->placeholder("JNEG");
+            output->condJumpPlaceholder("JNEG");
             result = 1;
             break;
         default:

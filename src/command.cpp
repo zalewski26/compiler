@@ -13,7 +13,16 @@ void AssignCommand::run(){
 }
 
 void IfElseCommand::run(){
-
+    int result = cond->load();
+    for (const auto &command : *this->cSet1) {
+        command->run();
+    }
+    output->jumpPlaceholder();
+    output->updateCondJump(result);
+    for (const auto &command : *this->cSet2) {
+        command->run();
+    }
+    output->updateJump();
 }
 
 void IfCommand::run(){
@@ -21,7 +30,7 @@ void IfCommand::run(){
     for (const auto &command : *this->cSet) {
         command->run();
     }
-    output->modify(result);
+    output->updateCondJump(result);
 }
 
 void WhileCommand::run(){
@@ -29,7 +38,7 @@ void WhileCommand::run(){
 }
 
 void RepeatCommand::run(){
-
+    
 }
 
 void ForToCommand::run(){
@@ -56,7 +65,6 @@ void WriteCommand::run(){
     // printf("PUT\n");
     output->put();
 }
-
 
 
 void adjAddress(int pos){

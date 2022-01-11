@@ -8,15 +8,26 @@ void Output::printCode(){
     }
 }
 
-void Output::modify(int result){
+void Output::updateCondJump(int result){
     for (int j = 0; j < result; j++){
-        int temp = counter - counters.top();
-        counters.pop();
+        int temp = counter - condJumpCount.top();
+        condJumpCount.pop();
         for (int i = programCode.size() - 1; i >= 0; i--){
             if (programCode[i] == std::string("JZERO") || programCode[i] == std::string("JPOS") || programCode[i] == std::string("JNEG")){
                 programCode[i] = programCode[i] + " "  + std::to_string(temp);
                 break;
             }
+        }
+    }
+}
+
+void Output::updateJump(){
+    int temp = counter - jumpCount.top();
+    jumpCount.pop();
+    for (int i = programCode.size() - 1; i >= 0; i--){
+        if (programCode[i] == std::string("JUMP")){
+            programCode[i] = programCode[i] + " "  + std::to_string(temp);
+            break;
         }
     }
 }
@@ -41,8 +52,14 @@ void Output::halt(){
     printCode();
 }  
 
-void Output::placeholder(std::string name){
+void Output::condJumpPlaceholder(std::string name){
     programCode.push_back(name);
-    counters.push(counter);
+    condJumpCount.push(counter);
+    counter++;
+}
+
+void Output::jumpPlaceholder(){
+    programCode.push_back(std::string("JUMP"));
+    jumpCount.push(counter);
     counter++;
 }

@@ -42,7 +42,8 @@ private:
     std::vector<std::string> programCode;
     void printCode();
     int counter = 0;
-    std::stack<int> counters;
+    std::stack<int> condJumpCount;
+    std::stack<int> jumpCount;
 public:
     void get();
     void put();
@@ -61,8 +62,10 @@ public:
     void jneg(int);
     void halt(); 
 
-    void placeholder(std::string);
-    void modify(int);
+    void condJumpPlaceholder(std::string);
+    void updateCondJump(int);
+    void jumpPlaceholder();
+    void updateJump();
 };
 
 /********** DECLARATIONS **************/
@@ -104,8 +107,13 @@ public:
 };
 
 class IfElseCommand : public Command{
+private:
+    Condition* cond;
+    CommandSet* cSet1;
+    CommandSet* cSet2;
 public:
-    IfElseCommand(Condition*, CommandSet*, CommandSet*){}
+    IfElseCommand(Condition* cond, CommandSet* cSet1, CommandSet* cSet2)
+             : cond(cond), cSet1(cSet1), cSet2(cSet2) {}
     void run() override;
 };
 
