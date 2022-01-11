@@ -62,7 +62,7 @@ public:
     void halt(); 
 
     void placeholder(std::string);
-    void modify();
+    void modify(int);
 };
 
 /********** DECLARATIONS **************/
@@ -190,7 +190,7 @@ private:
     Conditions type;
 public:
     Condition(Value* a, Value* b, Conditions type) : val1(a), val2(b), type(type){};
-    void load();
+    int load();
 };
 
 

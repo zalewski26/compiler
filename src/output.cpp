@@ -4,19 +4,20 @@
 void Output::printCode(){
     for (int i = 0; i < programCode.size(); i++){
         std::cout << "\033[1;34m " << i << "\033[0m " << programCode[i] << "\n";
+        std::cerr << programCode[i] << "\n";
     }
 }
 
-void Output::modify(){
-    int temp = counter - counters.top() + 1;
-    counters.pop();
-    for (int i = programCode.size() - 1; i >= 0; i--){
-        if (programCode[i] == std::string("JZERO"))
-            programCode[i] = std::string("JZERO ") + std::to_string(temp);
-        if (programCode[i] == std::string("JPOS"))
-            programCode[i] = std::string("JPOS ") + std::to_string(temp);
-        if (programCode[i] == std::string("JNEG"))
-            programCode[i] = std::string("JNEG ") + std::to_string(temp);
+void Output::modify(int result){
+    for (int j = 0; j < result; j++){
+        int temp = counter - counters.top();
+        counters.pop();
+        for (int i = programCode.size() - 1; i >= 0; i--){
+            if (programCode[i] == std::string("JZERO") || programCode[i] == std::string("JPOS") || programCode[i] == std::string("JNEG")){
+                programCode[i] = programCode[i] + " "  + std::to_string(temp);
+                break;
+            }
+        }
     }
 }
 
@@ -43,4 +44,5 @@ void Output::halt(){
 void Output::placeholder(std::string name){
     programCode.push_back(name);
     counters.push(counter);
+    counter++;
 }

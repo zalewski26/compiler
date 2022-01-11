@@ -1,9 +1,15 @@
 VAR
     x,n
 BEGIN
-    IF 2 NEQ 2 THEN
-        WRITE 1;
-        WRITE 2;
+    READ x;
+    IF x GE 1 THEN
+        IF x GE 2 THEN
+            WRITE 1;
+        ENDIF
+        IF x GE 3 THEN
+            WRITE 2;
+        ENDIF
+        WRITE 3;
     ENDIF
-    WRITE 3;
+    WRITE 4;
 END

@@ -17,11 +17,11 @@ void IfElseCommand::run(){
 }
 
 void IfCommand::run(){
-    cond->load();
+    int result = cond->load();
     for (const auto &command : *this->cSet) {
         command->run();
     }
-    output->modify();
+    output->modify(result);
 }
 
 void WhileCommand::run(){

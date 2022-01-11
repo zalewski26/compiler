@@ -1,9 +1,9 @@
 VAR
     x,y,z,p,q
 BEGIN
-    z ASSIGN 5;
-    y ASSIGN 4 MOD 3;
-    z ASSIGN 5 DIV 2;
-    p ASSIGN y;
-    q ASSIGN x;
+    x ASSIGN 5;
+    y ASSIGN x PLUS 3;
+    z ASSIGN y MINUS x;
+    p ASSIGN z;
+    WRITE p;
 END
