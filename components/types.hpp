@@ -19,12 +19,16 @@ class Program {
 private:
     std::vector<Declaration*> declarations;
     CommandSet* commands;
-
     Declaration* getDeclaration(std::string name);
     void addDeclaration(std::string name);
 public:
+    char acc = 'a', addr = 'b';
+    int accVal, addrVal;
+    char registers[6] = {'c','d','e','f','g','h'};
+    int registersVal[6];
+
     void install(std::string name);
-    int context_check(std::string name);
+    Declaration* context_check(std::string name);
     void printAll();
 
     Program(CommandSet* commands) : commands(commands){};
@@ -46,63 +50,64 @@ public:
 /********** COMMAND ***************/
 class Command{
 public:
-    virtual void run() {};
+    virtual void run(Program*) {};
 };
 
 class AssignCommand : public Command{
+private:
+    Identifier* ident;
+    Expression* exp;
 public:
-    AssignCommand(Identifier*, Expression*){
-        printf("ASSIGN\n");
-    }
-    void run() override;
+    AssignCommand(Identifier* ident, Expression* exp) : ident(ident), exp(exp){}
+    void run(Program*) override;
 };
 
 class IfElseCommand : public Command{
 public:
     IfElseCommand(Condition*, CommandSet*, CommandSet*){}
-    void run() override;
+    void run(Program*) override;
 };
 
 class IfCommand : public Command{
 public:
     IfCommand(Condition*, CommandSet*){}
-    void run() override;
+    void run(Program*) override;
 };
 
 class WhileCommand : public Command{
 public:
     WhileCommand(Condition*, CommandSet*) {}
-    void run() override;
+    void run(Program*) override;
 };
 
 class RepeatCommand : public Command{
 public:
     RepeatCommand(CommandSet*, Condition*){}
-    void run() override;
+    void run(Program*) override;
 };
 
 class ForToCommand : public Command{
 public:
     ForToCommand(std::string, Value*, Value*, CommandSet*){}
-    void run() override;
+    void run(Program*) override;
 };
 
 class ForDownToCommand : public Command{
 public:
     ForDownToCommand(std::string, Value*, Value*, CommandSet*){}
-    void run() override;
+    void run(Program*) override;
 };
 
 class ReadCommand : public Command{
 public:
     ReadCommand(Identifier*) {}
-    void run() override;
+    void run(Program*) override;
 };
 
 class WriteCommand : public Command{
 public:
     WriteCommand(Value*) {}
-    void run() override;
+    void run(Program*) override;
 };
 
 
@@ -118,9 +123,7 @@ public:
 
 class BinaryExpression : public Expression{
 public:
-    BinaryExpression(Value* v1, Value* v2, int type) {
-        printf("%d\n", type);
-    }
+    BinaryExpression(Value* v1, Value* v2, int type) {}
 };
 
 

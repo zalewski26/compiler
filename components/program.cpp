@@ -18,16 +18,16 @@ void Program::install (std::string name){
     if (d == 0)
         addDeclaration(name);
     else
-        std::cout << "error: " << name << " is already defined\n";
+        std::cout << "\033[1;31merror: " << name << " is already defined\033[0m\n";
 }
 
-int Program::context_check(std::string name){
+Declaration* Program::context_check(std::string name){
     Declaration* d = getDeclaration(name);
     if (d == 0){
-        std::cout << "error: " << name << " is an undeclared identifier\n";
+        std::cout << "\033[1;31merror: " << name << " is an undeclared identifier\033[0m\n";
         return 0;
     }
-    return 1;
+    return d;
 }
 
 Program::Program(IdentifiersSet* ids, CommandSet* commands) : commands(commands) {
@@ -37,8 +37,9 @@ Program::Program(IdentifiersSet* ids, CommandSet* commands) : commands(commands)
 }
 
 void Program::compile(){
+    printf("RESET %c\n", addr);
     for (const auto &command : *this->commands) {
-        command->run();
+        command->run(this);
     }
 }
 
