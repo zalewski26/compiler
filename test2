@@ -1,10 +1,9 @@
 VAR
     x,y,z,p,q
 BEGIN
-    READ x;
+    z ASSIGN 5;
     y ASSIGN 4 MOD 3;
     z ASSIGN 5 DIV 2;
     p ASSIGN y;
     q ASSIGN x;
-    WRITE q;
 END

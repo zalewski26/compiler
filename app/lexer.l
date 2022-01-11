@@ -1,6 +1,7 @@
 %option noyywrap
+%option yylineno
 %{
-    #include "parser.tab.hpp"
+    #include "../parser.tab.hpp"
     #include <string.h> 
     #include <stdlib.h> 
     int yylex();

@@ -3,7 +3,8 @@
 
 #include <vector>
 #include <string>
-#include "enums.hpp"
+#include <stack>
+#include "../inc/enums.hpp"
 
 class Identifier;
 class Value;
@@ -37,6 +38,31 @@ public:
 
 /*********** OUTPUT *******************/
 class Output{
+private:
+    std::vector<std::string> programCode;
+    void printCode();
+    int counter = 0;
+    std::stack<int> counters;
+public:
+    void get();
+    void put();
+    void load(char);
+    void store(char);
+    void add(char);
+    void sub(char);
+    void shift(char);
+    void swap(char);
+    void reset(char);
+    void inc(char);
+    void dec(char);
+    void jump(int);
+    void jpos(int);
+    void jzero(int);
+    void jneg(int);
+    void halt(); 
+
+    void placeholder(std::string);
+    void modify();
 };
 
 /********** DECLARATIONS **************/
@@ -84,8 +110,10 @@ public:
 };
 
 class IfCommand : public Command{
+    Condition* cond;
+    CommandSet* cSet;
 public:
-    IfCommand(Condition*, CommandSet*){}
+    IfCommand(Condition* cond, CommandSet* cSet) : cond(cond), cSet(cSet) {}
     void run() override;
 };
 

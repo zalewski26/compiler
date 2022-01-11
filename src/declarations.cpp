@@ -1,5 +1,6 @@
-#include "types.hpp"
+#include "../inc/types.hpp"
 #include <iostream>
+extern void yyerror(std::string);
 
 Declaration* Declarations::getDeclaration(std::string name){
     for (auto i : declarations){
@@ -17,14 +18,15 @@ void Declarations::install (std::string name){
     Declaration* d = getDeclaration(name);
     if (d == 0)
         addDeclaration(name);
-    else
-        std::cout << "\033[1;31merror: " << name << " is already defined\033[0m\n";
+    else{
+        yyerror(std::string(name) + " is already defined");
+    }
 }
 
 Declaration* Declarations::context_check(std::string name){
     Declaration* d = getDeclaration(name);
     if (d == 0){
-        std::cout << "\033[1;31merror: " << name << " is an undeclared identifier\033[0m\n";
+        yyerror(std::string(name) + " is an undeclared identifier");
         return 0;
     }
     return d;

@@ -1,0 +1,9 @@
+VAR
+    x,n
+BEGIN
+    IF 2 NEQ 2 THEN
+        WRITE 1;
+        WRITE 2;
+    ENDIF
+    WRITE 3;
+END
