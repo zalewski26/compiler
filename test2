@@ -1,10 +1,10 @@
 VAR
-    x,y,z,p,q,x
+    x,y,z,p,q
 BEGIN
-    a ASSIGN 4;
-    x ASSIGN 3 PLUS 4;
-    y ASSIGN 4 MINUS 3;
-    z ASSIGN 4 TIMES 2;
-    p ASSIGN 6 DIV 3;
-    q ASSIGN 9 MOD 4;
+    READ x;
+    y ASSIGN 4 MOD 3;
+    z ASSIGN 5 DIV 2;
+    p ASSIGN y;
+    q ASSIGN x;
+    WRITE q;
 END

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include "enums.hpp"
 
 class Identifier;
 class Value;
@@ -11,29 +12,43 @@ class Expression;
 class Command;
 class Declaration;
 typedef std::vector<Command*> CommandSet;
-typedef std::vector<Identifier*> IdentifiersSet;
 
+void adjAddress(int pos);
 
 /********** PROGRAM ***************/
 class Program {
 private:
-    std::vector<Declaration*> declarations;
     CommandSet* commands;
-    Declaration* getDeclaration(std::string name);
-    void addDeclaration(std::string name);
 public:
-    char acc = 'a', addr = 'b';
+    Program(CommandSet* commands) : commands(commands){};
+    void compile();
+};
+
+/********** REGISTERS *****************/
+class Registers{
+private:
+public:
+    const char acc = 'a';
+    const char addr = 'b';
     int accVal, addrVal;
     char registers[6] = {'c','d','e','f','g','h'};
     int registersVal[6];
+};
 
+/*********** OUTPUT *******************/
+class Output{
+};
+
+/********** DECLARATIONS **************/
+class Declarations{
+private:
+    std::vector<Declaration*> declarations;
+
+    Declaration* getDeclaration(std::string name);
+    void addDeclaration(std::string name);
+public:
     void install(std::string name);
     Declaration* context_check(std::string name);
-    void printAll();
-
-    Program(CommandSet* commands) : commands(commands){};
-    Program(IdentifiersSet* ids, CommandSet* commands);
-    void compile();
 };
 
 /********** DECLARATION ***************/
@@ -50,7 +65,7 @@ public:
 /********** COMMAND ***************/
 class Command{
 public:
-    virtual void run(Program*) {};
+    virtual void run() {};
 };
 
 class AssignCommand : public Command{
@@ -59,55 +74,58 @@ private:
     Expression* exp;
 public:
     AssignCommand(Identifier* ident, Expression* exp) : ident(ident), exp(exp){}
-    void run(Program*) override;
+    void run() override;
 };
 
 class IfElseCommand : public Command{
 public:
     IfElseCommand(Condition*, CommandSet*, CommandSet*){}
-    void run(Program*) override;
+    void run() override;
 };
 
 class IfCommand : public Command{
 public:
     IfCommand(Condition*, CommandSet*){}
-    void run(Program*) override;
+    void run() override;
 };
 
 class WhileCommand : public Command{
 public:
     WhileCommand(Condition*, CommandSet*) {}
-    void run(Program*) override;
+    void run() override;
 };
 
 class RepeatCommand : public Command{
 public:
     RepeatCommand(CommandSet*, Condition*){}
-    void run(Program*) override;
+    void run() override;
 };
 
 class ForToCommand : public Command{
 public:
     ForToCommand(std::string, Value*, Value*, CommandSet*){}
-    void run(Program*) override;
+    void run() override;
 };
 
 class ForDownToCommand : public Command{
 public:
     ForDownToCommand(std::string, Value*, Value*, CommandSet*){}
-    void run(Program*) override;
+    void run() override;
 };
 
 class ReadCommand : public Command{
+private:
+    Identifier* ident;
 public:
-    ReadCommand(Identifier*) {}
-    void run(Program*) override;
+    ReadCommand(Identifier* i) : ident(i) {}
+    void run() override;
 };
 
 class WriteCommand : public Command{
+    Value* val;
 public:
-    WriteCommand(Value*) {}
-    void run(Program*) override;
+    WriteCommand(Value* val) : val(val) {}
+    void run() override;
 };
 
 
@@ -126,16 +144,25 @@ public:
 };
 
 class BinaryExpression : public Expression{
+private:
+    Value* val1;
+    Value* val2;
+    Operations type;
 public:
-    BinaryExpression(Value* v1, Value* v2, int type) {}
+    BinaryExpression(Value* v1, Value* v2, Operations type) : val1(v1), val2(v2), type(type) {}
     void load() override;
 };
 
 
 /********** CONDITION ***************/
 class Condition{
+private:
+    Value* val1;
+    Value* val2;
+    Conditions type;
 public:
-    Condition(Value* a, Value* b, int type){};
+    Condition(Value* a, Value* b, Conditions type) : val1(a), val2(b), type(type){};
+    void load();
 };
 
 
@@ -154,8 +181,12 @@ public:
 };
 
 class numValue : public Value{
+private:
+    int value;
 public:
-    numValue(int num) {};
+    numValue(int num) : value(num) {};
+    int getValue() {return value;}
+    void setValue(int value) {this->value = value;}
     void load() override;
 };
 
@@ -173,6 +204,5 @@ public:
         name = n;
     }
 };
-
 
 #endif

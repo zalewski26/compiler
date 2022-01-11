@@ -1,65 +1,80 @@
 #include "types.hpp"
+extern Declarations* declarations;
+extern Registers* registers;
+extern Output* output;
 
-void AssignCommand::run(Program* p){
-    Declaration* d = p->context_check(ident->name);
+void AssignCommand::run(){
+    Declaration* d = declarations->context_check(ident->name);
     if (d != 0){
         // printf("LOAD EXPRESSION TO A:\n");
         exp->load();
-
-        if (p->addrVal < d->pos){
-            while (p->addrVal < d->pos){
-                printf("INC %c\n", p->addr);
-                p->addrVal++;
-            }
-        }
-        else if (p->addrVal > d->pos){
-            if ((p->addrVal - d->pos) < d->pos){
-                while (p->addrVal > d->pos){
-                    printf("DEC %c\n", p->addr);
-                    p->addrVal--;
-                }
-            }
-            else {
-                printf("RESET %c\n", p->addr);
-                p->addrVal = 0;
-                while (p->addrVal < d->pos){
-                    printf("INC %c\n", p->addr);
-                    p->addrVal++;
-                }
-            }
-        }
-        printf("STORE %c\n", p->addr);
+        adjAddress(d->pos);
+        printf("STORE %c\n", registers->addr);
     }
 }
 
-void IfElseCommand::run(Program* p){
+void IfElseCommand::run(){
 
 }
 
-void IfCommand::run(Program* p){
+void IfCommand::run(){
 
 }
 
-void WhileCommand::run(Program* p){
+void WhileCommand::run(){
 
 }
 
-void RepeatCommand::run(Program* p){
+void RepeatCommand::run(){
 
 }
 
-void ForToCommand::run(Program* p){
+void ForToCommand::run(){
 
 }
 
-void ForDownToCommand::run(Program* p){
+void ForDownToCommand::run(){
 
 }
 
-void ReadCommand::run(Program* p){
-
+void ReadCommand::run(){
+    Declaration* d = declarations->context_check(ident->name);
+    if (d != 0){
+        printf("GET\n");
+        adjAddress(d->pos);
+        printf("STORE %c\n", registers->addr);
+    }
 }
 
-void WriteCommand::run(Program* p){
-    
+void WriteCommand::run(){
+    val->load();
+    printf("PUT\n");
+}
+
+
+
+void adjAddress(int pos){
+    extern Registers* registers;
+    if (registers->addrVal < pos){
+        while (registers->addrVal < pos){
+            printf("INC %c\n", registers->addr);
+            registers->addrVal++;
+        }
+    }
+    else if (registers->addrVal > pos){
+        if ((registers->addrVal - pos) < pos){
+            while (registers->addrVal > pos){
+                printf("DEC %c\n", registers->addr);
+                registers->addrVal--;
+            }
+        }
+        else {
+            printf("RESET %c\n", registers->addr);
+            registers->addrVal = 0;
+            while (registers->addrVal < pos){
+                printf("INC %c\n", registers->addr);
+                registers->addrVal++;
+            }
+        }
+    }
 }
