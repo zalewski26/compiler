@@ -1895,6 +1895,6 @@ int main(){
 }
 
 void yyerror(std::string error){
-    std::cout << "\033[1;31merror at line " << yylineno-1  << " :\033[0m " << error << "\n";
+    std::cout << "\033[1;31merror at line " << yylineno  << " :\033[0m " << error << "\n";
     exit(1);
 }

@@ -1,11 +1,11 @@
 VAR
-    x,n
+    n,x
 BEGIN
     READ x;
-    IF x GEQ 2 THEN
-        WRITE 1;
-    ELSE
-        WRITE 2;
-        WRITE 3;
-    ENDIF
+    n ASSIGN 3;
+    REPEAT
+        WRITE n;
+        WRITE x;
+        x ASSIGN x MINUS 1;
+    UNTIL x GE 0;
 END

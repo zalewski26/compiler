@@ -19,6 +19,8 @@ ENDDO           { return (ENDDO); }
 ENDWHILE        { return (ENDWHILE); }
 ENDFOR          { return (ENDFOR); }
 END             { return (END); }
+REPEAT          { return (REPEAT);}
+UNTIL           { return (UNTIL);}
 ASSIGN          { return (ASSIGN); }
 IF              { return (IF); }
 THEN            { return (THEN); }

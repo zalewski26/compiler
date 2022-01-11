@@ -7,13 +7,18 @@ void AssignCommand::run(){
     Declaration* d = declarations->context_check(ident->name);
     if (d != 0){
         exp->load();
-        adjAddress(d->pos);
+        output->reset(registers->addr);
+        registers->addrVal = 0;
+        while (registers->addrVal < d->pos){
+            output->inc(registers->addr);
+            registers->addrVal++;
+        }
         output->store(registers->addr);
     }
 }
 
 void IfElseCommand::run(){
-    int result = cond->load();
+    int result = cond->loadIf();
     for (const auto &command : *this->cSet1) {
         command->run();
     }
@@ -26,7 +31,7 @@ void IfElseCommand::run(){
 }
 
 void IfCommand::run(){
-    int result = cond->load();
+    int result = cond->loadIf();
     for (const auto &command : *this->cSet) {
         command->run();
     }
@@ -34,11 +39,21 @@ void IfCommand::run(){
 }
 
 void WhileCommand::run(){
-
+    output->repeatPlaceholder();
+    int result = cond->loadIf();
+    for (const auto &command : *this->cSet) {
+        command->run();
+    }
+    output->updateWhile();
 }
 
 void RepeatCommand::run(){
-    
+    output->repeatPlaceholder();
+    for (const auto &command : *this->cSet) {
+        command->run();
+    }
+    int result = cond->loadRepeat();
+    output->updateRepeat(result);
 }
 
 void ForToCommand::run(){
@@ -54,45 +69,18 @@ void ReadCommand::run(){
     if (d != 0){
         // printf("GET\n");
         output->get();
-        adjAddress(d->pos);
-        // printf("STORE %c\n", registers->addr);
+        output->reset(registers->addr);
+        registers->addrVal = 0;
+        while (registers->addrVal < d->pos){
+            output->inc(registers->addr);
+            registers->addrVal++;
+        }
         output->store(registers->addr);
     }
 }
 
 void WriteCommand::run(){
     val->load();
-    // printf("PUT\n");
     output->put();
 }
 
-
-void adjAddress(int pos){
-    extern Registers* registers;
-    if (registers->addrVal < pos){
-        while (registers->addrVal < pos){
-            // printf("INC %c\n", registers->addr);
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-    }
-    else if (registers->addrVal > pos){
-        if ((registers->addrVal - pos) < pos){
-            while (registers->addrVal > pos){
-                // printf("DEC %c\n", registers->addr);
-                output->dec(registers->addr);
-                registers->addrVal--;
-            }
-        }
-        else {
-            // printf("RESET %c\n", registers->addr);
-            output->reset(registers->addr);
-            registers->addrVal = 0;
-            while (registers->addrVal < pos){
-                // printf("INC %c\n", registers->addr);
-                output->inc(registers->addr);
-                registers->addrVal++;
-            }
-        }
-    }
-}

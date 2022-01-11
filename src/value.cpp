@@ -6,7 +6,12 @@ extern Output* output;
 void idValue::load(){
     Declaration* d = declarations->context_check(ident->name);
     if (d != 0){
-        adjAddress(d->pos);
+        output->reset(registers->addr);
+        registers->addrVal = 0;
+        while (registers->addrVal < d->pos){
+            output->inc(registers->addr);
+            registers->addrVal++;
+        }
         output->load(registers->addr);
     }
 }

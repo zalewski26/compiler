@@ -14,7 +14,6 @@ class Command;
 class Declaration;
 typedef std::vector<Command*> CommandSet;
 
-void adjAddress(int pos);
 
 /********** PROGRAM ***************/
 class Program {
@@ -44,6 +43,7 @@ private:
     int counter = 0;
     std::stack<int> condJumpCount;
     std::stack<int> jumpCount;
+    std::stack<int> repeatCount;
 public:
     void get();
     void put();
@@ -66,6 +66,9 @@ public:
     void updateCondJump(int);
     void jumpPlaceholder();
     void updateJump();
+    void repeatPlaceholder();
+    void updateRepeat(int);
+    void updateWhile();
 };
 
 /********** DECLARATIONS **************/
@@ -126,14 +129,20 @@ public:
 };
 
 class WhileCommand : public Command{
+private:
+    Condition* cond;
+    CommandSet* cSet;
 public:
-    WhileCommand(Condition*, CommandSet*) {}
+    WhileCommand(Condition* cond, CommandSet* cSet) : cond(cond), cSet(cSet) {}
     void run() override;
 };
 
 class RepeatCommand : public Command{
+private:
+    CommandSet* cSet;
+    Condition* cond;
 public:
-    RepeatCommand(CommandSet*, Condition*){}
+    RepeatCommand(CommandSet* cSet, Condition* cond) : cSet(cSet), cond(cond){}
     void run() override;
 };
 
@@ -198,7 +207,8 @@ private:
     Conditions type;
 public:
     Condition(Value* a, Value* b, Conditions type) : val1(a), val2(b), type(type){};
-    int load();
+    int loadIf();
+    int loadRepeat();
 };
 
 

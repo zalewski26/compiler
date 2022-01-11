@@ -32,6 +32,26 @@ void Output::updateJump(){
     }
 }
 
+void Output::updateRepeat(int result){
+    int temp = repeatCount.top();
+    repeatCount.pop();
+    for (int j = 0; j < result; j++){
+        for (int i = programCode.size() - 1; i >= 0; i--){
+            if (programCode[i] == std::string("JZERO") || programCode[i] == std::string("JPOS") || programCode[i] == std::string("JNEG")){
+                programCode[i] = programCode[i] + " "  + std::to_string(temp - i);
+                break;
+            }
+        }
+    }
+}
+
+void Output::updateWhile(){
+    counter++;
+    int temp = repeatCount.top();
+    repeatCount.pop();
+    programCode.push_back(std::string("JUMP ") + std::to_string(temp - counter));
+}
+
 void Output::get(){programCode.push_back("GET"); counter++;}
 void Output::put(){programCode.push_back("PUT"); counter++;}
 void Output::load(char c){programCode.push_back(std::string("LOAD ") + c); counter++;}  
@@ -62,4 +82,8 @@ void Output::jumpPlaceholder(){
     programCode.push_back(std::string("JUMP"));
     jumpCount.push(counter);
     counter++;
+}
+
+void Output::repeatPlaceholder(){
+    repeatCount.push(counter);
 }
