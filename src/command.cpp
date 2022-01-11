@@ -45,6 +45,7 @@ void WhileCommand::run(){
         command->run();
     }
     output->updateWhile();
+    output->updateCondJump(result);
 }
 
 void RepeatCommand::run(){

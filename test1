@@ -2,10 +2,9 @@ VAR
     n,x
 BEGIN
     READ x;
-    n ASSIGN 3;
-    REPEAT
-        WRITE n;
+    WHILE x GEQ 0
+    DO
         WRITE x;
         x ASSIGN x MINUS 1;
-    UNTIL x GE 0;
+    ENDWHILE
 END

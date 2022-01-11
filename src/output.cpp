@@ -46,10 +46,10 @@ void Output::updateRepeat(int result){
 }
 
 void Output::updateWhile(){
-    counter++;
     int temp = repeatCount.top();
     repeatCount.pop();
     programCode.push_back(std::string("JUMP ") + std::to_string(temp - counter));
+    counter++;
 }
 
 void Output::get(){programCode.push_back("GET"); counter++;}
