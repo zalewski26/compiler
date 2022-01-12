@@ -1,8 +1,6 @@
 VAR
     x,y,z,p
 BEGIN
-    READ x;
-    READ y;
-    z ASSIGN x DIV y;
-    WRITE z;
+    x ASSIGN -123456780;
+    WRITE x;
 END
