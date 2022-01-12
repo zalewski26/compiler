@@ -84,7 +84,10 @@ void ForCommand::run(){
 
 void ReadCommand::run(){
     output->get();
+    output->reset('h');
+    output->swap('h');
     ident->loadAddr();
+    output->swap('h');
     output->store(registers->addr);
 }
 

@@ -1,9 +1,8 @@
 VAR
-    x,y,z
+    x,y,z,p
 BEGIN
-    FOR x FROM 1 TO 5 DO
-        FOR y FROM x DOWNTO 1 DO 
-            WRITE y;
-        ENDFOR
-    ENDFOR
+    READ x;
+    READ y;
+    z ASSIGN x DIV y;
+    WRITE z;
 END

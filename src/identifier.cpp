@@ -46,9 +46,9 @@ void Pidentifier::loadAddr(){
 
 void arrIdentifier::loadAddr(){
     this->baseDiff->load();
-    output->reset('g');
-    output->swap('g');
+    output->reset('e');
+    output->swap('e');
     index->load();
-    output->sub('g');
+    output->sub('e');
     output->swap(registers->addr);
 }
