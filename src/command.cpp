@@ -5,10 +5,10 @@ extern Output* output;
 
 void AssignCommand::run(){
     exp->load();
-    output->reset('e');
-    output->swap('e');
+    output->reset('h');
+    output->swap('h');
     ident->loadAddr();
-    output->swap('e');
+    output->swap('h');
     output->store(registers->addr);
 }
 
@@ -68,7 +68,7 @@ void ForToCommand::run(){
         output->repeatPlaceholder();
 
         val2->load();
-        output->swap('c');
+        output->swap('h');
         output->reset(registers->addr);
         registers->addrVal = 0;
         while (registers->addrVal < d->pos){
@@ -76,7 +76,7 @@ void ForToCommand::run(){
             registers->addrVal++;
         }
         output->load(registers->addr);
-        output->sub('c');
+        output->sub('h');
         output->condJumpPlaceholder("JPOS");
         for (const auto &command : *this->cSet) {
             command->run();
@@ -112,7 +112,7 @@ void ForDownToCommand::run(){
         output->repeatPlaceholder();
 
         val2->load();
-        output->swap('c');
+        output->swap('h');
         output->reset(registers->addr);
         registers->addrVal = 0;
         while (registers->addrVal < d->pos){
@@ -120,7 +120,7 @@ void ForDownToCommand::run(){
             registers->addrVal++;
         }
         output->load(registers->addr);
-        output->sub('c');
+        output->sub('h');
         output->condJumpPlaceholder("JNEG");
         for (const auto &command : *this->cSet) {
             command->run();

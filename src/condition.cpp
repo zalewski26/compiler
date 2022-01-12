@@ -4,9 +4,9 @@ extern Output* output;
 int Condition::loadIf(){
     int result;
     val2->load();
-    output->swap('c');
+    output->swap('h');
     val1->load();
-    output->sub('c');
+    output->sub('h');
     switch (type){
         case Conditions::EQ:
             output->condJumpPlaceholder("JNEG");
@@ -44,9 +44,9 @@ int Condition::loadIf(){
 int Condition::loadRepeat(){
     int result;
     val2->load();
-    output->swap('c');
+    output->swap('h');
     val1->load();
-    output->sub('c');
+    output->sub('h');
     switch (type){
         case Conditions::EQ:
             output->condJumpPlaceholder("JZERO");
