@@ -1464,7 +1464,7 @@ yyreduce:
 
   case 5:
 #line 60 "app/parser.ypp"
-                                                            {declarations->install((yyvsp[-5].pidentifier));}
+                                                            {declarations->install((yyvsp[-5].pidentifier), (yyvsp[-3].num), (yyvsp[-1].num));}
 #line 1469 "parser.tab.cpp"
     break;
 
@@ -1476,7 +1476,7 @@ yyreduce:
 
   case 7:
 #line 62 "app/parser.ypp"
-                                                            {declarations->install((yyvsp[-5].pidentifier));}
+                                                            {declarations->install((yyvsp[-5].pidentifier),(yyvsp[-3].num),(yyvsp[-1].num));}
 #line 1481 "parser.tab.cpp"
     break;
 

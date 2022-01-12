@@ -1,8 +1,5 @@
 VAR
-    x,i
+    x,i,a[5:10]
 BEGIN
-    READ x;
-    FOR i FROM 5 DOWNTO x DO
-        WRITE i;
-    ENDFOR 
+    WRITE 2;
 END

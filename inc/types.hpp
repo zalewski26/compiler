@@ -75,12 +75,14 @@ public:
 class Declarations{
 private:
     std::vector<Declaration*> declarations;
+    int memoryCounter = 0;
 
     Declaration* getDeclaration(std::string name);
-    void addDeclaration(std::string name);
 public:
     void install(std::string name);
+    void install(std::string name, int start, int end);
     Declaration* context_check(std::string name);
+    void print();
 };
 
 /********** DECLARATION ***************/
@@ -88,10 +90,13 @@ class Declaration {
 public:
     std::string name;
     int pos;
-    bool inRegister;
+    int length;
+    int baseDiff;
 
-    Declaration(std::string name, int pos, bool inRegister) 
-            : name(name), pos(pos), inRegister(inRegister){}
+    Declaration(std::string name, int pos) 
+            : name(name), pos(pos){ length = 1; baseDiff = 0;}
+    Declaration(std::string name, int pos, int length, int baseDiff) 
+            : name(name), pos(pos), length(length), baseDiff(baseDiff) {}
 };
 
 /********** COMMAND ***************/
