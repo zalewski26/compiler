@@ -12,7 +12,7 @@
     // #define YYDEBUG 1
     int yylex();
     extern int yylineno;
-    void yyerror(std::string);
+    void yyerror(std::string, int correction=0);
 
     Program* program;
     Declarations* declarations = new Declarations();
@@ -98,8 +98,8 @@ value:
 ;
 identifier:
         pidentifier                         {$$ = new Pidentifier(std::string($1));}
-    |   pidentifier '[' pidentifier ']'     {$$ = new Pidentifier(std::string($1));}
-    |   pidentifier '[' num ']'             {$$ = new Pidentifier(std::string($1));}
+    |   pidentifier '[' pidentifier ']'     {$$ = new arrIdentifier(std::string($1), std::string($3));}
+    |   pidentifier '[' num ']'             {$$ = new arrIdentifier(std::string($1), $3);}
 ;
 %%
 
@@ -113,7 +113,7 @@ int main(){
 
 }
 
-void yyerror(std::string error){
-    std::cout << "\033[1;31merror at line " << yylineno  << " :\033[0m " << error << "\n";
+void yyerror(std::string error, int correction){
+    std::cout << "\033[1;31merror at line " << yylineno + correction  << " :\033[0m " << error << "\n";
     exit(1);
 }

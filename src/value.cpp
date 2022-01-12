@@ -4,16 +4,8 @@ extern Registers* registers;
 extern Output* output;
 
 void idValue::load(){
-    Declaration* d = declarations->context_check(ident->name);
-    if (d != 0){
-        output->reset(registers->addr);
-        registers->addrVal = 0;
-        while (registers->addrVal < d->pos){
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-        output->load(registers->addr);
-    }
+    ident->loadAddr();
+    output->load(registers->addr);
 }
 
 void numValue::load(){

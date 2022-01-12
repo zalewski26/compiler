@@ -76,7 +76,7 @@
     // #define YYDEBUG 1
     int yylex();
     extern int yylineno;
-    void yyerror(std::string);
+    void yyerror(std::string, int correction=0);
 
     Program* program;
     Declarations* declarations = new Declarations();
@@ -1638,13 +1638,13 @@ yyreduce:
 
   case 34:
 #line 101 "app/parser.ypp"
-                                            {(yyval.id) = new Pidentifier(std::string((yyvsp[-3].pidentifier)));}
+                                            {(yyval.id) = new arrIdentifier(std::string((yyvsp[-3].pidentifier)), std::string((yyvsp[-1].pidentifier)));}
 #line 1643 "parser.tab.cpp"
     break;
 
   case 35:
 #line 102 "app/parser.ypp"
-                                            {(yyval.id) = new Pidentifier(std::string((yyvsp[-3].pidentifier)));}
+                                            {(yyval.id) = new arrIdentifier(std::string((yyvsp[-3].pidentifier)), (yyvsp[-1].num));}
 #line 1649 "parser.tab.cpp"
     break;
 
@@ -1894,7 +1894,7 @@ int main(){
 
 }
 
-void yyerror(std::string error){
-    std::cout << "\033[1;31merror at line " << yylineno  << " :\033[0m " << error << "\n";
+void yyerror(std::string error, int correction){
+    std::cout << "\033[1;31merror at line " << yylineno + correction  << " :\033[0m " << error << "\n";
     exit(1);
 }

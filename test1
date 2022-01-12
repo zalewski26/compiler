@@ -1,5 +1,10 @@
 VAR
     x,i,a[5:10]
 BEGIN
-    WRITE 2;
+    FOR i FROM 5 TO 10 DO
+        a[i] ASSIGN i MINUS 5;
+    ENDFOR
+    FOR i FROM 5 TO 10 DO
+        WRITE a[i];
+    ENDFOR 
 END

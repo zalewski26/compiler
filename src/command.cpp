@@ -4,17 +4,12 @@ extern Registers* registers;
 extern Output* output;
 
 void AssignCommand::run(){
-    Declaration* d = declarations->context_check(ident->name);
-    if (d != 0){
-        exp->load();
-        output->reset(registers->addr);
-        registers->addrVal = 0;
-        while (registers->addrVal < d->pos){
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-        output->store(registers->addr);
-    }
+    exp->load();
+    output->reset('e');
+    output->swap('e');
+    ident->loadAddr();
+    output->swap('e');
+    output->store(registers->addr);
 }
 
 void IfElseCommand::run(){
@@ -146,18 +141,9 @@ void ForDownToCommand::run(){
 }
 
 void ReadCommand::run(){
-    Declaration* d = declarations->context_check(ident->name);
-    if (d != 0){
-        // printf("GET\n");
-        output->get();
-        output->reset(registers->addr);
-        registers->addrVal = 0;
-        while (registers->addrVal < d->pos){
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-        output->store(registers->addr);
-    }
+    output->get();
+    ident->loadAddr();
+    output->store(registers->addr);
 }
 
 void WriteCommand::run(){

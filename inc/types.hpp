@@ -82,6 +82,7 @@ public:
     void install(std::string name);
     void install(std::string name, int start, int end);
     Declaration* context_check(std::string name);
+    void throwErr(std::string);
     void print();
 };
 
@@ -92,11 +93,12 @@ public:
     int pos;
     int length;
     int baseDiff;
+    bool isArray;
 
     Declaration(std::string name, int pos) 
-            : name(name), pos(pos){ length = 1; baseDiff = 0;}
+            : name(name), pos(pos){ length = 1; baseDiff = 0; isArray = false;}
     Declaration(std::string name, int pos, int length, int baseDiff) 
-            : name(name), pos(pos), length(length), baseDiff(baseDiff) {}
+            : name(name), pos(pos), length(length), baseDiff(baseDiff) {isArray = true;}
 };
 
 /********** COMMAND ***************/
@@ -259,15 +261,28 @@ public:
 /********** IDENTIFIER ***************/
 class Identifier{
 public:
-    std::string name;
     Identifier(){}
+    virtual void loadAddr(){};
 };
 
 class Pidentifier : public Identifier {
+private:
+    std::string name;
+    int pos;
 public:
-    Pidentifier(std::string n){
-        name = n;
-    }
+    Pidentifier(std::string);
+    void loadAddr();
+};
+
+class arrIdentifier : public Identifier {
+private:
+    std::string name;
+    numValue* baseDiff;
+    Value* index;
+public:
+    arrIdentifier(std::string, int);
+    arrIdentifier(std::string, std::string);
+    void loadAddr();
 };
 
 #endif
