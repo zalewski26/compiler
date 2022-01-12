@@ -71,8 +71,8 @@ command:
     |   IF condition THEN commands ENDIF                            {$$ = new IfCommand($2, $4);}
     |   WHILE condition DO commands ENDWHILE                        {$$ = new WhileCommand($2, $4);}
     |   REPEAT commands UNTIL condition ';'                         {$$ = new RepeatCommand($2, $4);}
-    |   FOR pidentifier FROM value TO value DO commands ENDFOR      {$$ = new ForToCommand(std::string($2), $4, $6, $8);}
-    |   FOR pidentifier FROM value DOWNTO value DO commands ENDFOR  {$$ = new ForDownToCommand(std::string($2), $4, $6, $8);}
+    |   FOR pidentifier FROM value TO value DO commands ENDFOR      {$$ = new ForCommand(new Pidentifier(std::string($2)), $4, $6, $8, false);}
+    |   FOR pidentifier FROM value DOWNTO value DO commands ENDFOR  {$$ = new ForCommand(new Pidentifier(std::string($2)), $4, $6, $8, true);}
     |   READ identifier ';'                                         {$$ = new ReadCommand($2);}
     |   WRITE value ';'                                             {$$ = new WriteCommand($2);}
 ;

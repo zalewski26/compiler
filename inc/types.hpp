@@ -6,6 +6,7 @@
 #include <stack>
 #include "../inc/enums.hpp"
 
+class Pidentifier;
 class Identifier;
 class Value;
 class Condition;
@@ -153,29 +154,17 @@ public:
     void run() override;
 };
 
-class ForToCommand : public Command{
+class ForCommand : public Command{
 private:
-    std::string name;
+    Pidentifier* pident;
     Value* val1;
     Value* val2;
     CommandSet* cSet;
+    bool downTo;
 
 public:
-    ForToCommand(std::string name, Value* v1, Value* v2, CommandSet* cSet)
-        : name(name), val1(v1), val2(v2), cSet(cSet){}
-    void run() override;
-};
-
-class ForDownToCommand : public Command{
-private:
-    std::string name;
-    Value* val1;
-    Value* val2;
-    CommandSet* cSet;
-
-public:
-    ForDownToCommand(std::string name, Value* v1, Value* v2, CommandSet* cSet)
-        : name(name), val1(v1), val2(v2), cSet(cSet){}
+    ForCommand(Pidentifier* pident, Value* v1, Value* v2, CommandSet* cSet, bool downTo)
+        : pident(pident), val1(v1), val2(v2), cSet(cSet), downTo(downTo){}
     void run() override;
 };
 

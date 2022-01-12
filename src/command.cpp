@@ -52,92 +52,34 @@ void RepeatCommand::run(){
     output->updateRepeat(result);
 }
 
-void ForToCommand::run(){
-    Declaration* d = declarations->context_check(name);
-    if (d != 0){
-        val1->load();
-        output->reset(registers->addr);
-        registers->addrVal = 0;
-        while (registers->addrVal < d->pos){
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-        output->store(registers->addr);
-        output->reset('f');
-        output->swap('f');
-        output->repeatPlaceholder();
+void ForCommand::run(){
+    val1->load();
+    pident->loadAddr();
+    output->store(registers->addr);
+    output->repeatPlaceholder();
 
-        val2->load();
-        output->swap('h');
-        output->reset(registers->addr);
-        registers->addrVal = 0;
-        while (registers->addrVal < d->pos){
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-        output->load(registers->addr);
-        output->sub('h');
-        output->condJumpPlaceholder("JPOS");
-        for (const auto &command : *this->cSet) {
-            command->run();
-        }
-        output->inc('f');
-        output->reset('a');
-        output->add('f');
-        output->reset(registers->addr);
-        registers->addrVal = 0;
-        while (registers->addrVal < d->pos){
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-        output->store(registers->addr);
-        output->updateWhile();
-        output->updateCondJump(1);
-    }
-}
-
-void ForDownToCommand::run(){
-    Declaration* d = declarations->context_check(name);
-    if (d != 0){
-        val1->load();
-        output->reset(registers->addr);
-        registers->addrVal = 0;
-        while (registers->addrVal < d->pos){
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-        output->store(registers->addr);
-        output->reset('f');
-        output->swap('f');
-        output->repeatPlaceholder();
-
-        val2->load();
-        output->swap('h');
-        output->reset(registers->addr);
-        registers->addrVal = 0;
-        while (registers->addrVal < d->pos){
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-        output->load(registers->addr);
-        output->sub('h');
+    val2->load();
+    output->swap('h');
+    pident->loadAddr();
+    output->load(registers->addr);
+    output->sub('h');
+    if (downTo)
         output->condJumpPlaceholder("JNEG");
-        for (const auto &command : *this->cSet) {
-            command->run();
-        }
-        output->dec('f');
-        output->reset('a');
-        output->add('f');
-        output->reset(registers->addr);
-        registers->addrVal = 0;
-        while (registers->addrVal < d->pos){
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-        output->store(registers->addr);
-        output->updateWhile();
-        output->updateCondJump(1);
+    else
+        output->condJumpPlaceholder("JPOS");
+    for (const auto &command : *this->cSet) {
+        command->run();
     }
+    output->reset('a');
+    pident->loadAddr();
+    output->load(registers->addr);
+    if (downTo)
+        output->dec('a');
+    else
+        output->inc('a');
+    output->store(registers->addr);
+    output->updateWhile();
+    output->updateCondJump(1);
 }
 
 void ReadCommand::run(){

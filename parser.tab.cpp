@@ -1524,13 +1524,13 @@ yyreduce:
 
   case 15:
 #line 74 "app/parser.ypp"
-                                                                    {(yyval.cmd) = new ForToCommand(std::string((yyvsp[-7].pidentifier)), (yyvsp[-5].val), (yyvsp[-3].val), (yyvsp[-1].cSet));}
+                                                                    {(yyval.cmd) = new ForCommand(new Pidentifier(std::string((yyvsp[-7].pidentifier))), (yyvsp[-5].val), (yyvsp[-3].val), (yyvsp[-1].cSet), false);}
 #line 1529 "parser.tab.cpp"
     break;
 
   case 16:
 #line 75 "app/parser.ypp"
-                                                                    {(yyval.cmd) = new ForDownToCommand(std::string((yyvsp[-7].pidentifier)), (yyvsp[-5].val), (yyvsp[-3].val), (yyvsp[-1].cSet));}
+                                                                    {(yyval.cmd) = new ForCommand(new Pidentifier(std::string((yyvsp[-7].pidentifier))), (yyvsp[-5].val), (yyvsp[-3].val), (yyvsp[-1].cSet), true);}
 #line 1535 "parser.tab.cpp"
     break;
 

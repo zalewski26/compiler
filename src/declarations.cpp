@@ -37,14 +37,14 @@ void Declarations::install(std::string name, int start, int end){
 Declaration* Declarations::context_check(std::string name){
     Declaration* d = getDeclaration(name);
     if (d == 0){
-        yyerror((std::string(name) + " is an undeclared identifier"), -1);
+        yyerror((std::string(name) + " is an undeclared identifier"), 0);
         return 0;
     }
     return d;
 }
 
 void Declarations::throwErr(std::string err){
-    yyerror(err);
+    yyerror(err, -1);           // zależy od liczby linijek w wyrażeniu
 }
 
 void Declarations::print(){

@@ -1,7 +1,9 @@
 VAR
-    x,i,a[5:10]
+    x,y,z
 BEGIN
-    READ i;
-    x ASSIGN 5 TIMES i;
-    WRITE x;
+    FOR x FROM 1 TO 5 DO
+        FOR y FROM x DOWNTO 1 DO 
+            WRITE y;
+        ENDFOR
+    ENDFOR
 END
