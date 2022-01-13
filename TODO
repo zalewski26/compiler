@@ -2,3 +2,4 @@
 2) można zadeklarować w forze
 3) troszkę za duże koszty
 4) errory do porządku
+5) nie można ruszać iteratora wewnątrz pętli
