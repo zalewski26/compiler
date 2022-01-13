@@ -1,0 +1,16 @@
+VAR
+    raz,dwa,raz,trzy
+BEGIN
+    raz ASSIGN 3;
+    trzy ASSIGN 3;
+    cztery ASSIGN 3;
+    WHILE raz GEQ 2
+    DO 
+        raz ASSIGN 2;
+        dwa ASSIGN 3;
+        WHILE raz GEQ 1
+        DO
+            raz ASSIGN 1;
+        ENDWHILE
+    ENDWHILE
+END
