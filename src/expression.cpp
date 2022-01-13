@@ -23,6 +23,9 @@ void BinaryExpression::load(){
             /*  x * y:    
                     'c'= x  'd'= y  'e'= wynik  'f'= 1 (shift) 'g'= -1 (shift)
             */
+            val2->load();
+            output->swap('d');
+            val1->load();
             output->swap('c');
             // zerowanie e, ustawianie f i g pod shifty
             output->reset('e');

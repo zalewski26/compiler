@@ -48,7 +48,7 @@ void RepeatCommand::run(){
     for (const auto &command : *this->cSet) {
         command->run();
     }
-    int result = cond->loadRepeat();
+    int result = cond->loadIf();
     output->updateRepeat(result);
 }
 
