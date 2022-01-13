@@ -1,6 +1,0 @@
-VAR
-    x,y,z,p
-BEGIN
-    x ASSIGN -123456780;
-    WRITE x;
-END

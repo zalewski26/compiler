@@ -1,5 +1,5 @@
 VAR
-    n,j,sito[2:100],i
+    n,j,sito[2:100]
 BEGIN
     n ASSIGN 100;
     FOR i FROM n DOWNTO 2 DO

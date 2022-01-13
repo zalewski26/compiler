@@ -43,6 +43,11 @@ Declaration* Declarations::context_check(std::string name){
     return d;
 }
 
+void Declarations::remove(std::string name){
+    declarations.erase(declarations.begin() + declarations.size() - 1);
+    memoryCounter--;
+}
+
 void Declarations::throwErr(std::string err){
     yyerror(err, -1);           // zależy od liczby linijek w wyrażeniu
 }

@@ -1,0 +1,17 @@
+VAR
+    x
+BEGIN
+    READ x;
+    FOR i FROM 1 TO x DO
+        FOR j FROM i DOWNTO 1 DO
+            WRITE i;
+            WRITE j;
+        ENDFOR
+    ENDFOR
+    FOR i FROM 1 TO x DO
+        FOR j FROM i DOWNTO 1 DO
+            WRITE i;
+            WRITE j;
+        ENDFOR
+    ENDFOR
+END

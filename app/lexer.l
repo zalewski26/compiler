@@ -30,8 +30,6 @@ WHILE           { return (WHILE); }
 DO              { return (DO); }
 FOR             { return (FOR); }
 FROM            { return (FROM); }
-TO              { return (TO); }
-DOWNTO          { return (DOWNTO); }
 READ            { return (READ); }
 WRITE           { return (WRITE); }
 PLUS            { return (PLUS); }
@@ -45,6 +43,8 @@ LE              { return (LE); }
 GE              { return (GE); }
 LEQ             { return (LEQ); }
 GEQ             { return (GEQ); }
+TO              {yylval.direction = false; return (direction); }
+DOWNTO          {yylval.direction = true; return (direction); }
 {pidentifier}   {yylval.pidentifier = (char*) strdup(yytext); return (pidentifier);}
 {num}           {yylval.num = atoi(yytext); return(num);}
 [ \t\n]+        ;

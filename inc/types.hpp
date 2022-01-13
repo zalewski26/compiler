@@ -83,6 +83,7 @@ public:
     void install(std::string name);
     void install(std::string name, int start, int end);
     Declaration* context_check(std::string name);
+    void remove(std::string name);
     void throwErr(std::string);
     void print();
 };

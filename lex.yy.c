@@ -387,16 +387,16 @@ static const flex_int16_t yy_accept[120] =
         0,    0,    0,    0,   38,   36,   35,   35,   36,   34,
        34,   36,   36,   36,   36,   36,   36,   36,   36,   36,
        36,   36,   36,   36,   36,   36,   36,   33,   37,   35,
-       34,   34,   34,    0,    0,    0,   15,    0,    0,   27,
-        0,    0,   30,   10,   29,    0,    0,    0,    0,    0,
-        0,    0,   18,    0,    0,    0,    0,   33,    0,    0,
-       25,    0,    0,    6,   16,    0,   32,   31,    0,   26,
-       28,    0,    0,    0,    0,    0,    0,    1,    0,    0,
+       34,   34,   34,    0,    0,    0,   15,    0,    0,   25,
+        0,    0,   28,   10,   27,    0,    0,    0,    0,    0,
+        0,    0,   31,    0,    0,    0,    0,   33,    0,    0,
+       23,    0,    0,    6,   16,    0,   30,   29,    0,   24,
+       26,    0,    0,    0,    0,    0,    0,    1,    0,    0,
         0,    0,    0,   12,    0,    0,    0,    0,   17,    0,
-       22,   20,    0,   11,    0,    0,    0,    0,    0,    2,
+       20,   18,    0,   11,    0,    0,    0,    0,    0,    2,
 
-        0,    3,    0,   13,    0,   23,    0,   24,    8,   14,
-       21,    9,   19,    5,    0,    7,    0,    4,    0
+        0,    3,    0,   13,    0,   21,    0,   22,    8,   14,
+       19,    9,   32,    5,    0,    7,    0,    4,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -917,77 +917,77 @@ YY_RULE_SETUP
 case 18:
 YY_RULE_SETUP
 #line 33 "app/lexer.l"
-{ return (TO); }
+{ return (READ); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 34 "app/lexer.l"
-{ return (DOWNTO); }
+{ return (WRITE); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 35 "app/lexer.l"
-{ return (READ); }
+{ return (PLUS); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 36 "app/lexer.l"
-{ return (WRITE); }
+{ return (MINUS); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 37 "app/lexer.l"
-{ return (PLUS); }
+{ return (TIMES); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 38 "app/lexer.l"
-{ return (MINUS); }
+{ return (DIV); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 39 "app/lexer.l"
-{ return (TIMES); }
+{ return (MOD); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 40 "app/lexer.l"
-{ return (DIV); }
+{ return (EQ); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 41 "app/lexer.l"
-{ return (MOD); }
+{ return (NEQ); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 42 "app/lexer.l"
-{ return (EQ); }
+{ return (LE); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 43 "app/lexer.l"
-{ return (NEQ); }
+{ return (GE); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 44 "app/lexer.l"
-{ return (LE); }
+{ return (LEQ); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 45 "app/lexer.l"
-{ return (GE); }
+{ return (GEQ); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 46 "app/lexer.l"
-{ return (LEQ); }
+{yylval.direction = false; return (direction); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 47 "app/lexer.l"
-{ return (GEQ); }
+{yylval.direction = true; return (direction); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP

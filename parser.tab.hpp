@@ -88,7 +88,8 @@ extern int yydebug;
     LEQ = 288,
     GEQ = 289,
     pidentifier = 290,
-    num = 291
+    num = 291,
+    direction = 292
   };
 #endif
 
@@ -101,6 +102,7 @@ union semrec
 
     int num; /* Integer values */
     char* pidentifier; /* Identifiers */
+    bool direction;
     struct lbs* lbls; /* For backpatching */
     Identifier* id;
     Value* val;
@@ -109,7 +111,7 @@ union semrec
     Command* cmd;
     CommandSet* cSet;
 
-#line 113 "parser.tab.hpp"
+#line 115 "parser.tab.hpp"
 
 };
 #line 23 "app/parser.ypp"
