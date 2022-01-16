@@ -1,5 +1,6 @@
 1) naprawić mnożenie
-2) można zadeklarować w forze
-3) troszkę za duże koszty
+2) można zadeklarować w forze - zrobione
+3) troszkę za duże koszty - jest git
 4) errory do porządku
 5) nie można ruszać iteratora wewnątrz pętli
+6) nazwa pliku a nie strumień 
