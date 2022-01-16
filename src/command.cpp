@@ -58,9 +58,6 @@ void RepeatCommand::run(){
 }
 
 void ForCommand::run(){
-    std::string pidName = declarations->installTemp();
-    Pidentifier* limit = new Pidentifier(pidName);
-
     val1->load();
     pident->loadAddr();
     output->store(registers->addr);
@@ -92,8 +89,6 @@ void ForCommand::run(){
     output->store(registers->addr);
     output->updateWhile();
     output->updateCondJump(1);
-    declarations->remove(pidName);
-    declarations->remove(pident->getName());
 }
 
 void ReadCommand::run(){

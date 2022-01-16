@@ -1,9 +1,10 @@
 VAR
-    x
+    a,b,c
 BEGIN
-    READ x;
-    FOR z FROM 1 TO x DO
-        x ASSIGN x MINUS 1;
-        WRITE x;
-    ENDFOR
+    a ASSIGN 1;
+    b ASSIGN a PLUS 1;
+    c ASSIGN b PLUS 1;
+    WRITE a;
+    WRITE b;
+    WRITE c;
 END

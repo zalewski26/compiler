@@ -82,10 +82,10 @@ private:
 public:
     void install(std::string name, bool isIterator=false);
     void install(std::string name, int start, int end);
-    std::string installTemp();
     Declaration* context_check(std::string name);
+    void markAsInitialized(Identifier*);
     void remove(std::string name);
-    void throwErr(std::string, int correction=-2);
+    void throwErr(std::string, int correction=0);
     void print();
 };
 
@@ -98,11 +98,16 @@ public:
     int baseDiff;
     bool isArray;
     bool isIterator;
+    bool isInitialized;
 
     Declaration(std::string name, int pos, bool isIterator) 
-            : name(name), pos(pos), isIterator(isIterator) { length = 1; baseDiff = 0; isArray = false;}
+            : name(name), pos(pos), isIterator(isIterator) { 
+                length = 1; baseDiff = 0; isArray = false; isInitialized = false;
+            }
     Declaration(std::string name, int pos, int length, int baseDiff) 
-            : name(name), pos(pos), length(length), baseDiff(baseDiff) {isArray = true;}
+            : name(name), pos(pos), length(length), baseDiff(baseDiff) {
+                isArray = true; isInitialized = false;
+            }
 };
 
 /********** COMMAND ***************/
@@ -160,14 +165,15 @@ public:
 class ForCommand : public Command{
 private:
     Pidentifier* pident;
+    Pidentifier* limit;
     Value* val1;
     Value* val2;
     CommandSet* cSet;
     bool downTo;
 
 public:
-    ForCommand(Pidentifier* pident, Value* v1, Value* v2, CommandSet* cSet, bool downTo)
-        : pident(pident), val1(v1), val2(v2), cSet(cSet), downTo(downTo){}
+    ForCommand(Pidentifier* pident, Pidentifier* limit, Value* v1, Value* v2, CommandSet* cSet, bool downTo)
+        : pident(pident), limit(limit), val1(v1), val2(v2), cSet(cSet), downTo(downTo){}
     void run() override;
 };
 

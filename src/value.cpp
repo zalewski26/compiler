@@ -8,6 +8,8 @@ extern Output* output;
 
 void idValue::load(){
     ident->loadAddr();
+    if (!declarations->context_check(ident->getName())->isInitialized)
+        declarations->throwErr(ident->getName() + " is uninitialized");
     output->load(registers->addr);
 }
 

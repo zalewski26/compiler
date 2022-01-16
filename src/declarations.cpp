@@ -22,6 +22,8 @@ void Declarations::install(std::string name, bool isIterator){
 }
 
 void Declarations::install(std::string name, int start, int end){
+    if (end < start)
+        yyerror(std::string(name) + " has incorrect boundaries", 0);
     Declaration* d = getDeclaration(name);
     if (d == 0){
         int length = end - start + 1;
@@ -34,11 +36,11 @@ void Declarations::install(std::string name, int start, int end){
     }
 }
 
-std::string Declarations::installTemp(){
-    Declaration* d = new Declaration("temp" + std::to_string(memoryCounter), memoryCounter, false);
-    declarations.push_back(d);
-    memoryCounter++;
-    return d->name;
+void Declarations::markAsInitialized(Identifier* ident){
+    for (auto i : declarations){
+        if (i->name == ident->getName())
+            i->isInitialized = true;
+    }
 }
 
 Declaration* Declarations::context_check(std::string name){
