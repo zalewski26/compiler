@@ -74,8 +74,8 @@ command:
     |   IF condition THEN commands ENDIF                            {$$ = new IfCommand($2, $4);}
     |   WHILE condition DO commands ENDWHILE                        {$$ = new WhileCommand($2, $4);}
     |   REPEAT commands UNTIL condition ';'                         {$$ = new RepeatCommand($2, $4);}
-    |   FOR pidentifier {declarations->install($2);} FROM value direction value DO commands ENDFOR      {
-                                                                    $$ = new ForCommand(new Pidentifier(std::string($2)), $5, $7, $9, $6);
+    |   FOR pidentifier FROM value direction value {declarations->install($2, true);} DO commands ENDFOR      {
+                                                                    $$ = new ForCommand(new Pidentifier(std::string($2)), $4, $6, $9, $5);
                                                                     declarations->remove($2);}
     |   READ identifier ';'                                         {$$ = new ReadCommand($2);}
     |   WRITE value ';'                                             {$$ = new WriteCommand($2);}

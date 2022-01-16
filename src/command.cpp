@@ -3,6 +3,11 @@ extern Declarations* declarations;
 extern Registers* registers;
 extern Output* output;
 
+AssignCommand::AssignCommand(Identifier* ident, Expression* exp) : ident(ident), exp(exp){
+        if (ident->isIterator)
+            declarations->throwErr("you cannot modify iterator inside loop");
+}
+
 void AssignCommand::run(){
     exp->load();
     output->reset('h');

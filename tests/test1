@@ -1,7 +1,10 @@
 VAR
-    x,y,z,i
+    x
 BEGIN
-    FOR i FROM 1 TO 5 DO
-        WRITE i;
+    FOR z FROM 1 TO 5 DO
+        FOR q FROM 1 TO 5 DO
+            WRITE x;
+            i ASSIGN 5;
+        ENDFOR
     ENDFOR
 END

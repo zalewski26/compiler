@@ -10,14 +10,14 @@ Declaration* Declarations::getDeclaration(std::string name){
     return 0;
 }
 
-void Declarations::install(std::string name){
+void Declarations::install(std::string name, bool isIterator){
     Declaration* d = getDeclaration(name);
     if (d == 0){
-        declarations.push_back(new Declaration(name,memoryCounter));
+        declarations.push_back(new Declaration(name,memoryCounter, isIterator));
         memoryCounter++;
     }
     else{
-        yyerror(std::string(name) + " is already defined", -1);
+        yyerror(std::string(name) + " is already defined", 0);
     }
 }
 
@@ -30,7 +30,7 @@ void Declarations::install(std::string name, int start, int end){
         memoryCounter += length;
     }
     else{
-        yyerror(std::string(name) + " is already defined", -1);
+        yyerror(std::string(name) + " is already defined", 0);
     }
 }
 
@@ -48,8 +48,8 @@ void Declarations::remove(std::string name){
     memoryCounter--;
 }
 
-void Declarations::throwErr(std::string err){
-    yyerror(err, -1);           // zależy od liczby linijek w wyrażeniu
+void Declarations::throwErr(std::string err, int correction){
+    yyerror(err, correction);           // zależy od liczby linijek w wyrażeniu
 }
 
 void Declarations::print(){

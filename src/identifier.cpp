@@ -10,6 +10,7 @@ Pidentifier::Pidentifier(std::string name){
     }
     this->name = name;
     this->pos = d->pos;
+    this->isIterator = d->isIterator;
 }
 
 arrIdentifier::arrIdentifier(std::string name, int num){
@@ -23,6 +24,7 @@ arrIdentifier::arrIdentifier(std::string name, int num){
     this->name = name;
     this->baseDiff = new numValue(d->baseDiff);
     this->index = new numValue(num);
+    this->isIterator = false;
 }
 
 arrIdentifier::arrIdentifier(std::string name, std::string ident){

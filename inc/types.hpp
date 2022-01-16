@@ -80,11 +80,11 @@ private:
 
     Declaration* getDeclaration(std::string name);
 public:
-    void install(std::string name);
+    void install(std::string name, bool isIterator=false);
     void install(std::string name, int start, int end);
     Declaration* context_check(std::string name);
     void remove(std::string name);
-    void throwErr(std::string);
+    void throwErr(std::string, int correction=-2);
     void print();
 };
 
@@ -96,9 +96,10 @@ public:
     int length;
     int baseDiff;
     bool isArray;
+    bool isIterator;
 
-    Declaration(std::string name, int pos) 
-            : name(name), pos(pos){ length = 1; baseDiff = 0; isArray = false;}
+    Declaration(std::string name, int pos, bool isIterator) 
+            : name(name), pos(pos), isIterator(isIterator) { length = 1; baseDiff = 0; isArray = false;}
     Declaration(std::string name, int pos, int length, int baseDiff) 
             : name(name), pos(pos), length(length), baseDiff(baseDiff) {isArray = true;}
 };
@@ -114,7 +115,7 @@ private:
     Identifier* ident;
     Expression* exp;
 public:
-    AssignCommand(Identifier* ident, Expression* exp) : ident(ident), exp(exp){}
+    AssignCommand(Identifier* ident, Expression* exp);
     void run() override;
 };
 
@@ -251,6 +252,7 @@ public:
 /********** IDENTIFIER ***************/
 class Identifier{
 public:
+    bool isIterator;
     Identifier(){}
     virtual void loadAddr(){};
 };
