@@ -82,6 +82,7 @@ private:
 public:
     void install(std::string name, bool isIterator=false);
     void install(std::string name, int start, int end);
+    std::string installTemp();
     Declaration* context_check(std::string name);
     void remove(std::string name);
     void throwErr(std::string, int correction=-2);
@@ -255,6 +256,10 @@ public:
     bool isIterator;
     Identifier(){}
     virtual void loadAddr(){};
+
+    virtual std::string getName(){
+        return "base";
+    };
 };
 
 class Pidentifier : public Identifier {
@@ -264,6 +269,9 @@ private:
 public:
     Pidentifier(std::string);
     void loadAddr();
+    std::string getName(){
+        return name;
+    };
 };
 
 class arrIdentifier : public Identifier {
@@ -275,6 +283,9 @@ public:
     arrIdentifier(std::string, int);
     arrIdentifier(std::string, std::string);
     void loadAddr();
+    std::string getName(){
+        return name;
+    };
 };
 
 #endif

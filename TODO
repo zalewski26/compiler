@@ -9,4 +9,11 @@
 8) liczba iteracji pętli FOR jest ustalana na początku
     i nie podlega zmianie w trakcie wykonywania pętli
     (nawet jeśli zmieniają się wartości zmiennych
-    wyznaczających począteki koniec pętli)
+    wyznaczających początek i koniec pętli)
+9) nie można zadeklarować tab[10:5]
+10) long long
+11) linijki jednak pojebało
+12) wycieki pamięci
+
+? Czy git że w lexie puszczam nierozpoznane?
+? Czy okej że w deklaracji się myli o 1 z linią błędu?

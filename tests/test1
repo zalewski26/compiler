@@ -1,10 +1,9 @@
 VAR
     x
 BEGIN
-    FOR z FROM 1 TO 5 DO
-        FOR q FROM 1 TO 5 DO
-            WRITE x;
-            i ASSIGN 5;
-        ENDFOR
+    READ x;
+    FOR z FROM 1 TO x DO
+        x ASSIGN x MINUS 1;
+        WRITE x;
     ENDFOR
 END

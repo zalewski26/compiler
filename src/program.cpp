@@ -12,6 +12,6 @@ void Program::compile(){
         command->run();
     }
     output->halt();
-    // declarations->print();
+    declarations->print();
 }
 

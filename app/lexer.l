@@ -13,6 +13,9 @@ pidentifier [_a-z]+
 num         -?([0-9]|[1-9][0-9]*)   
 
 %%
+\(              {BEGIN(COMMENT);}
+<COMMENT>\)     {BEGIN(INITIAL);}
+<COMMENT>.      ;
 VAR             {return (VAR); }
 BEGIN           { return (_BEGIN); }
 ENDDO           { return (ENDDO); }

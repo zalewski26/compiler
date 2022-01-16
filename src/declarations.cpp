@@ -34,6 +34,13 @@ void Declarations::install(std::string name, int start, int end){
     }
 }
 
+std::string Declarations::installTemp(){
+    Declaration* d = new Declaration("temp" + std::to_string(memoryCounter), memoryCounter, false);
+    declarations.push_back(d);
+    memoryCounter++;
+    return d->name;
+}
+
 Declaration* Declarations::context_check(std::string name){
     Declaration* d = getDeclaration(name);
     if (d == 0){
