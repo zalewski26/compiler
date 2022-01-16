@@ -1,8 +1,7 @@
 VAR
-    x,y,z
+    x,y,z,i
 BEGIN
-    READ x;
-    READ y;
-    z ASSIGN x TIMES y;
-    WRITE z;
+    FOR i FROM 1 TO 5 DO
+        WRITE i;
+    ENDFOR
 END

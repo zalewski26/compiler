@@ -95,10 +95,10 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-#line 23 "app/parser.ypp"
+#line 24 "app/parser.ypp"
 union semrec
 {
-#line 24 "app/parser.ypp"
+#line 25 "app/parser.ypp"
 
     int num; /* Integer values */
     char* pidentifier; /* Identifiers */
@@ -114,7 +114,7 @@ union semrec
 #line 115 "parser.tab.hpp"
 
 };
-#line 23 "app/parser.ypp"
+#line 24 "app/parser.ypp"
 typedef union semrec YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

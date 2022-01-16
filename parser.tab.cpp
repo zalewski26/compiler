@@ -76,6 +76,7 @@
     // #define YYDEBUG 1
     int yylex();
     extern int yylineno;
+    extern FILE *yyin;
     void yyerror(std::string, int correction=0);
 
     Program* program;
@@ -83,7 +84,7 @@
     Registers* registers = new Registers();
     Output* output = new Output();
 
-#line 87 "parser.tab.cpp"
+#line 88 "parser.tab.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -130,7 +131,7 @@ extern int yydebug;
 
     #include "../inc/types.hpp"
 
-#line 134 "parser.tab.cpp"
+#line 135 "parser.tab.cpp"
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -177,10 +178,10 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-#line 23 "app/parser.ypp"
+#line 24 "app/parser.ypp"
 union semrec
 {
-#line 24 "app/parser.ypp"
+#line 25 "app/parser.ypp"
 
     int num; /* Integer values */
     char* pidentifier; /* Identifiers */
@@ -193,10 +194,10 @@ union semrec
     Command* cmd;
     CommandSet* cSet;
 
-#line 197 "parser.tab.cpp"
+#line 198 "parser.tab.cpp"
 
 };
-#line 23 "app/parser.ypp"
+#line 24 "app/parser.ypp"
 typedef union semrec YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -573,10 +574,10 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    57,    57,    58,    61,    62,    63,    64,    67,    68,
-      71,    72,    73,    74,    75,    76,    76,    79,    80,    83,
-      84,    85,    86,    87,    88,    91,    92,    93,    94,    95,
-      96,    99,   100,   103,   104,   105
+       0,    58,    58,    59,    62,    63,    64,    65,    68,    69,
+      72,    73,    74,    75,    76,    77,    77,    80,    81,    84,
+      85,    86,    87,    88,    89,    92,    93,    94,    95,    96,
+      97,   100,   101,   104,   105,   106
 };
 #endif
 
@@ -1441,213 +1442,213 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 57 "app/parser.ypp"
+#line 58 "app/parser.ypp"
                                                 {program = new Program((yyvsp[-1].cSet)); /*program->printAll();*/}
-#line 1447 "parser.tab.cpp"
+#line 1448 "parser.tab.cpp"
     break;
 
   case 3:
-#line 58 "app/parser.ypp"
+#line 59 "app/parser.ypp"
                                                 {program = new Program((yyvsp[-1].cSet));}
-#line 1453 "parser.tab.cpp"
+#line 1454 "parser.tab.cpp"
     break;
 
   case 4:
-#line 61 "app/parser.ypp"
+#line 62 "app/parser.ypp"
                                                             {declarations->install((yyvsp[0].pidentifier));}
-#line 1459 "parser.tab.cpp"
+#line 1460 "parser.tab.cpp"
     break;
 
   case 5:
-#line 62 "app/parser.ypp"
+#line 63 "app/parser.ypp"
                                                             {declarations->install((yyvsp[-5].pidentifier), (yyvsp[-3].num), (yyvsp[-1].num));}
-#line 1465 "parser.tab.cpp"
+#line 1466 "parser.tab.cpp"
     break;
 
   case 6:
-#line 63 "app/parser.ypp"
+#line 64 "app/parser.ypp"
                                                             {declarations->install((yyvsp[0].pidentifier));}
-#line 1471 "parser.tab.cpp"
+#line 1472 "parser.tab.cpp"
     break;
 
   case 7:
-#line 64 "app/parser.ypp"
+#line 65 "app/parser.ypp"
                                                             {declarations->install((yyvsp[-5].pidentifier),(yyvsp[-3].num),(yyvsp[-1].num));}
-#line 1477 "parser.tab.cpp"
+#line 1478 "parser.tab.cpp"
     break;
 
   case 8:
-#line 67 "app/parser.ypp"
+#line 68 "app/parser.ypp"
                                 {(yyvsp[-1].cSet)->push_back((yyvsp[0].cmd)); (yyval.cSet) = (yyvsp[-1].cSet);}
-#line 1483 "parser.tab.cpp"
+#line 1484 "parser.tab.cpp"
     break;
 
   case 9:
-#line 68 "app/parser.ypp"
+#line 69 "app/parser.ypp"
                                 { CommandSet* set = new CommandSet(); set->push_back((yyvsp[0].cmd)); (yyval.cSet) = set;}
-#line 1489 "parser.tab.cpp"
+#line 1490 "parser.tab.cpp"
     break;
 
   case 10:
-#line 71 "app/parser.ypp"
+#line 72 "app/parser.ypp"
                                                                     {(yyval.cmd) = new AssignCommand((yyvsp[-3].id), (yyvsp[-1].exp));}
-#line 1495 "parser.tab.cpp"
+#line 1496 "parser.tab.cpp"
     break;
 
   case 11:
-#line 72 "app/parser.ypp"
+#line 73 "app/parser.ypp"
                                                                     {(yyval.cmd) = new IfElseCommand((yyvsp[-5].cond), (yyvsp[-3].cSet), (yyvsp[-1].cSet));}
-#line 1501 "parser.tab.cpp"
+#line 1502 "parser.tab.cpp"
     break;
 
   case 12:
-#line 73 "app/parser.ypp"
+#line 74 "app/parser.ypp"
                                                                     {(yyval.cmd) = new IfCommand((yyvsp[-3].cond), (yyvsp[-1].cSet));}
-#line 1507 "parser.tab.cpp"
+#line 1508 "parser.tab.cpp"
     break;
 
   case 13:
-#line 74 "app/parser.ypp"
+#line 75 "app/parser.ypp"
                                                                     {(yyval.cmd) = new WhileCommand((yyvsp[-3].cond), (yyvsp[-1].cSet));}
-#line 1513 "parser.tab.cpp"
+#line 1514 "parser.tab.cpp"
     break;
 
   case 14:
-#line 75 "app/parser.ypp"
+#line 76 "app/parser.ypp"
                                                                     {(yyval.cmd) = new RepeatCommand((yyvsp[-3].cSet), (yyvsp[-1].cond));}
-#line 1519 "parser.tab.cpp"
+#line 1520 "parser.tab.cpp"
     break;
 
   case 15:
-#line 76 "app/parser.ypp"
+#line 77 "app/parser.ypp"
                         {declarations->install((yyvsp[0].pidentifier));}
-#line 1525 "parser.tab.cpp"
+#line 1526 "parser.tab.cpp"
     break;
 
   case 16:
-#line 76 "app/parser.ypp"
+#line 77 "app/parser.ypp"
                                                                                                         {
                                                                     (yyval.cmd) = new ForCommand(new Pidentifier(std::string((yyvsp[-8].pidentifier))), (yyvsp[-5].val), (yyvsp[-3].val), (yyvsp[-1].cSet), (yyvsp[-4].direction));
                                                                     declarations->remove((yyvsp[-8].pidentifier));}
-#line 1533 "parser.tab.cpp"
+#line 1534 "parser.tab.cpp"
     break;
 
   case 17:
-#line 79 "app/parser.ypp"
+#line 80 "app/parser.ypp"
                                                                     {(yyval.cmd) = new ReadCommand((yyvsp[-1].id));}
-#line 1539 "parser.tab.cpp"
+#line 1540 "parser.tab.cpp"
     break;
 
   case 18:
-#line 80 "app/parser.ypp"
+#line 81 "app/parser.ypp"
                                                                     {(yyval.cmd) = new WriteCommand((yyvsp[-1].val));}
-#line 1545 "parser.tab.cpp"
+#line 1546 "parser.tab.cpp"
     break;
 
   case 19:
-#line 83 "app/parser.ypp"
+#line 84 "app/parser.ypp"
                             {(yyval.exp) = new SingleExpression((yyvsp[0].val));}
-#line 1551 "parser.tab.cpp"
+#line 1552 "parser.tab.cpp"
     break;
 
   case 20:
-#line 84 "app/parser.ypp"
+#line 85 "app/parser.ypp"
                             {(yyval.exp) = new BinaryExpression((yyvsp[-2].val), (yyvsp[0].val), Operations::ADD);}
-#line 1557 "parser.tab.cpp"
+#line 1558 "parser.tab.cpp"
     break;
 
   case 21:
-#line 85 "app/parser.ypp"
+#line 86 "app/parser.ypp"
                             {(yyval.exp) = new BinaryExpression((yyvsp[-2].val), (yyvsp[0].val), Operations::SUBTRACT);}
-#line 1563 "parser.tab.cpp"
+#line 1564 "parser.tab.cpp"
     break;
 
   case 22:
-#line 86 "app/parser.ypp"
+#line 87 "app/parser.ypp"
                             {(yyval.exp) = new BinaryExpression((yyvsp[-2].val), (yyvsp[0].val), Operations::MULTIPLY);}
-#line 1569 "parser.tab.cpp"
+#line 1570 "parser.tab.cpp"
     break;
 
   case 23:
-#line 87 "app/parser.ypp"
+#line 88 "app/parser.ypp"
                             {(yyval.exp) = new BinaryExpression((yyvsp[-2].val), (yyvsp[0].val), Operations::DIVIDE);}
-#line 1575 "parser.tab.cpp"
+#line 1576 "parser.tab.cpp"
     break;
 
   case 24:
-#line 88 "app/parser.ypp"
+#line 89 "app/parser.ypp"
                             {(yyval.exp) = new BinaryExpression((yyvsp[-2].val), (yyvsp[0].val), Operations::MOD);}
-#line 1581 "parser.tab.cpp"
+#line 1582 "parser.tab.cpp"
     break;
 
   case 25:
-#line 91 "app/parser.ypp"
+#line 92 "app/parser.ypp"
                         {(yyval.cond) = new Condition((yyvsp[-2].val), (yyvsp[0].val), Conditions::EQ);}
-#line 1587 "parser.tab.cpp"
+#line 1588 "parser.tab.cpp"
     break;
 
   case 26:
-#line 92 "app/parser.ypp"
+#line 93 "app/parser.ypp"
                         {(yyval.cond) = new Condition((yyvsp[-2].val), (yyvsp[0].val), Conditions::NEQ);}
-#line 1593 "parser.tab.cpp"
+#line 1594 "parser.tab.cpp"
     break;
 
   case 27:
-#line 93 "app/parser.ypp"
+#line 94 "app/parser.ypp"
                         {(yyval.cond) = new Condition((yyvsp[-2].val), (yyvsp[0].val), Conditions::LE);}
-#line 1599 "parser.tab.cpp"
+#line 1600 "parser.tab.cpp"
     break;
 
   case 28:
-#line 94 "app/parser.ypp"
+#line 95 "app/parser.ypp"
                         {(yyval.cond) = new Condition((yyvsp[-2].val), (yyvsp[0].val), Conditions::GE);}
-#line 1605 "parser.tab.cpp"
+#line 1606 "parser.tab.cpp"
     break;
 
   case 29:
-#line 95 "app/parser.ypp"
+#line 96 "app/parser.ypp"
                         {(yyval.cond) = new Condition((yyvsp[-2].val), (yyvsp[0].val), Conditions::LEQ);}
-#line 1611 "parser.tab.cpp"
+#line 1612 "parser.tab.cpp"
     break;
 
   case 30:
-#line 96 "app/parser.ypp"
+#line 97 "app/parser.ypp"
                         {(yyval.cond) = new Condition((yyvsp[-2].val), (yyvsp[0].val), Conditions::GEQ);}
-#line 1617 "parser.tab.cpp"
+#line 1618 "parser.tab.cpp"
     break;
 
   case 31:
-#line 99 "app/parser.ypp"
+#line 100 "app/parser.ypp"
                     {(yyval.val) = new numValue((yyvsp[0].num));}
-#line 1623 "parser.tab.cpp"
+#line 1624 "parser.tab.cpp"
     break;
 
   case 32:
-#line 100 "app/parser.ypp"
+#line 101 "app/parser.ypp"
                     {(yyval.val) = new idValue((yyvsp[0].id));}
-#line 1629 "parser.tab.cpp"
+#line 1630 "parser.tab.cpp"
     break;
 
   case 33:
-#line 103 "app/parser.ypp"
+#line 104 "app/parser.ypp"
                                             {(yyval.id) = new Pidentifier(std::string((yyvsp[0].pidentifier)));}
-#line 1635 "parser.tab.cpp"
+#line 1636 "parser.tab.cpp"
     break;
 
   case 34:
-#line 104 "app/parser.ypp"
+#line 105 "app/parser.ypp"
                                             {(yyval.id) = new arrIdentifier(std::string((yyvsp[-3].pidentifier)), std::string((yyvsp[-1].pidentifier)));}
-#line 1641 "parser.tab.cpp"
+#line 1642 "parser.tab.cpp"
     break;
 
   case 35:
-#line 105 "app/parser.ypp"
+#line 106 "app/parser.ypp"
                                             {(yyval.id) = new arrIdentifier(std::string((yyvsp[-3].pidentifier)), (yyvsp[-1].num));}
-#line 1647 "parser.tab.cpp"
+#line 1648 "parser.tab.cpp"
     break;
 
 
-#line 1651 "parser.tab.cpp"
+#line 1652 "parser.tab.cpp"
 
       default: break;
     }
@@ -1879,16 +1880,28 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 107 "app/parser.ypp"
+#line 108 "app/parser.ypp"
 
 
-int main(){
-    // printf("\033[1;34mParsing...\033[0m\n");
+int main(int argc, char** argv){
+    if (argc != 3) {
+        std::cerr << "Wrong number of arguments!\nTry: \033[1;33m./main $inputFile $outputFile\033[0m" << std::endl;
+        exit(1);
+    }
+
+    FILE * data = fopen( argv[1], "r" );
+    if(!data){
+        std::cerr << "error: Cannot open the file: " << argv[1] << std::endl;
+        return -1;
+    }
+    yyin = data;
+    printf("\033[1;34mParsing...\033[0m\n");
     // yydebug = 1;
+    freopen(argv[2],"w",stderr);
     yyparse();
-    // printf("\033[1;34mParsed successfully!\nCompiling...\033[0m\n");
+    printf("\033[1;34mParsed successfully!\nCompiling...\033[0m\n");
     program->compile();
-    // printf("\033[1;34mCompiled successfully!\033[0m\n");
+    printf("\033[1;34mCompiled successfully!\033[0m\n");
 
 }
 

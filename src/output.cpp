@@ -3,7 +3,7 @@
 
 void Output::printCode(){
     for (int i = 0; i < programCode.size(); i++){
-        std::cout << "\033[1;34m " << i << "\033[0m " << programCode[i] << "\n";
+        // std::cout << "\033[1;34m " << i << "\033[0m " << programCode[i] << "\n";
         std::cerr << programCode[i] << "\n";
     }
 }
