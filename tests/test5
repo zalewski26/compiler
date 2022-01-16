@@ -1,5 +1,5 @@
 VAR
-    a, b, c, d, e, f, g, h, x, i,j,k,l,m,n,o,p
+    a, b, c, d, e, f, g, h, x
 BEGIN
     READ a;
     READ b;
