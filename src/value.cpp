@@ -15,12 +15,12 @@ void idValue::load(){
 
 void numValue::load(){
     output->reset(registers->acc);
-    if (std::abs(value) > 10){
+    if (std::llabs(value) > 10){
         output->reset('b');
         output->inc('b');
         std::stack<int> commands;
-        while (std::abs(value) != 1){
-            if (std::abs(value % 2) == 1)
+        while (std::llabs(value) != 1){
+            if (std::llabs(value % 2) == 1)
                 commands.push(INC_COMMAND);
             commands.push(SHIFT_COMMAND);
             value /= 2;
@@ -49,12 +49,12 @@ void numValue::load(){
     }
     else {
         if (value > 0) {
-            for (int i = 0; i < value; i++) {
+            for (long long i = 0; i < value; i++) {
                 output->inc(registers->acc);
             }
         } 
         else {
-            for (int i = value; i < 0; i++) {
+            for (long long i = value; i < 0; i++) {
                 output->dec(registers->acc);
             }
         }

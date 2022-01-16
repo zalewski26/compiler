@@ -31,7 +31,7 @@ private:
 public:
     const char acc = 'a';
     const char addr = 'b';
-    int accVal, addrVal;
+    long long accVal, addrVal;
     char registers[6] = {'c','d','e','f','g','h'};
     int registersVal[6];
 };
@@ -42,9 +42,9 @@ private:
     std::vector<std::string> programCode;
     void printCode();
     int counter = 0;
-    std::stack<int> condJumpCount;
-    std::stack<int> jumpCount;
-    std::stack<int> repeatCount;
+    std::stack<long long> condJumpCount;
+    std::stack<long long> jumpCount;
+    std::stack<long long> repeatCount;
 public:
     void get();
     void put();
@@ -57,10 +57,10 @@ public:
     void reset(char);
     void inc(char);
     void dec(char);
-    void jump(int);
-    void jpos(int);
-    void jzero(int);
-    void jneg(int);
+    void jump(long long);
+    void jpos(long long);
+    void jzero(long long);
+    void jneg(long long);
     void halt(); 
 
     void condJumpPlaceholder(std::string);
@@ -76,12 +76,12 @@ public:
 class Declarations{
 private:
     std::vector<Declaration*> declarations;
-    int memoryCounter = 0;
+    long long memoryCounter = 0;
 
     Declaration* getDeclaration(std::string name);
 public:
     void install(std::string name, bool isIterator=false);
-    void install(std::string name, int start, int end);
+    void install(std::string name, long long start, long long end);
     Declaration* context_check(std::string name);
     void markAsInitialized(Identifier*);
     void remove(std::string name);
@@ -93,18 +93,18 @@ public:
 class Declaration {
 public:
     std::string name;
-    int pos;
-    int length;
-    int baseDiff;
+    long long pos;
+    long long length;
+    long long baseDiff;
     bool isArray;
     bool isIterator;
     bool isInitialized;
 
-    Declaration(std::string name, int pos, bool isIterator) 
+    Declaration(std::string name, long long pos, bool isIterator) 
             : name(name), pos(pos), isIterator(isIterator) { 
                 length = 1; baseDiff = 0; isArray = false; isInitialized = false;
             }
-    Declaration(std::string name, int pos, int length, int baseDiff) 
+    Declaration(std::string name, long long pos, long long length, long long baseDiff) 
             : name(name), pos(pos), length(length), baseDiff(baseDiff) {
                 isArray = true; isInitialized = false;
             }
@@ -247,11 +247,11 @@ public:
 
 class numValue : public Value{
 private:
-    int value;
+    long long value;
 public:
-    numValue(int num) : value(num) {};
-    int getValue() {return value;}
-    void setValue(int value) {this->value = value;}
+    numValue(long long num) : value(num) {};
+    long long getValue() {return value;}
+    void setValue(long long value) {this->value = value;}
     void load() override;
 };
 
@@ -271,7 +271,7 @@ public:
 class Pidentifier : public Identifier {
 private:
     std::string name;
-    int pos;
+    long long pos;
 public:
     Pidentifier(std::string);
     void loadAddr();
@@ -286,7 +286,7 @@ private:
     numValue* baseDiff;
     Value* index;
 public:
-    arrIdentifier(std::string, int);
+    arrIdentifier(std::string, long long);
     arrIdentifier(std::string, std::string);
     void loadAddr();
     std::string getName(){

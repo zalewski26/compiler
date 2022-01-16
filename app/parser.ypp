@@ -23,7 +23,7 @@
 
 %union semrec /* The Semantic Records */
 {
-    int num; /* Integer values */
+    long long num; /* Integer values */
     char* pidentifier; /* Identifiers */
     bool direction;
     struct lbs* lbls; /* For backpatching */

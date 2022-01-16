@@ -4,6 +4,7 @@
     #include "../parser.tab.hpp"
     #include <string.h> 
     #include <stdlib.h> 
+    #include <string>
     int yylex();
 %}
 
@@ -49,7 +50,7 @@ GEQ             { return (GEQ); }
 TO              {yylval.direction = false; return (direction); }
 DOWNTO          {yylval.direction = true; return (direction); }
 {pidentifier}   {yylval.pidentifier = (char*) strdup(yytext); return (pidentifier);}
-{num}           {yylval.num = atoi(yytext); return(num);}
+{num}           {yylval.num = std::stoll(yytext); return(num);}
 [ \t\n]+        ;
 .               { return yytext[0]; }
 %%

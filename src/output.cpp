@@ -2,7 +2,7 @@
 #include <iostream>
 
 void Output::printCode(){
-    for (int i = 0; i < programCode.size(); i++){
+    for (long long i = 0; i < programCode.size(); i++){
         // std::cout << "\033[1;34m " << i << "\033[0m " << programCode[i] << "\n";
         std::cerr << programCode[i] << "\n";
     }
@@ -12,7 +12,7 @@ void Output::updateCondJump(int result){
     for (int j = 0; j < result; j++){
         int temp = counter - condJumpCount.top();
         condJumpCount.pop();
-        for (int i = programCode.size() - 1; i >= 0; i--){
+        for (long long i = programCode.size() - 1; i >= 0; i--){
             if (programCode[i] == std::string("JZERO") || programCode[i] == std::string("JPOS") || programCode[i] == std::string("JNEG")){
                 programCode[i] = programCode[i] + " "  + std::to_string(temp);
                 break;
@@ -22,9 +22,9 @@ void Output::updateCondJump(int result){
 }
 
 void Output::updateJump(){
-    int temp = counter - jumpCount.top();
+    long long temp = counter - jumpCount.top();
     jumpCount.pop();
-    for (int i = programCode.size() - 1; i >= 0; i--){
+    for (long long i = programCode.size() - 1; i >= 0; i--){
         if (programCode[i] == std::string("JUMP")){
             programCode[i] = programCode[i] + " "  + std::to_string(temp);
             break;
@@ -33,10 +33,10 @@ void Output::updateJump(){
 }
 
 void Output::updateRepeat(int result){
-    int temp = repeatCount.top();
+    long long temp = repeatCount.top();
     repeatCount.pop();
     for (int j = 0; j < result; j++){
-        for (int i = programCode.size() - 1; i >= 0; i--){
+        for (long long i = programCode.size() - 1; i >= 0; i--){
             if (programCode[i] == std::string("JZERO") || programCode[i] == std::string("JPOS") || programCode[i] == std::string("JNEG")){
                 programCode[i] = programCode[i] + " "  + std::to_string(temp - i);
                 break;
@@ -46,7 +46,7 @@ void Output::updateRepeat(int result){
 }
 
 void Output::updateWhile(){
-    int temp = repeatCount.top();
+    long long temp = repeatCount.top();
     repeatCount.pop();
     programCode.push_back(std::string("JUMP ") + std::to_string(temp - counter));
     counter++;
@@ -63,10 +63,10 @@ void Output::swap(char c){programCode.push_back(std::string("SWAP ") + c); count
 void Output::reset(char c){programCode.push_back(std::string("RESET ") + c); counter++;}  
 void Output::inc(char c){programCode.push_back(std::string("INC ") + c); counter++;}  
 void Output::dec(char c){programCode.push_back(std::string("DEC ") + c); counter++;}  
-void Output::jump(int a){programCode.push_back(std::string("JUMP ") + std::to_string(a)); counter++;}  
-void Output::jpos(int a){programCode.push_back(std::string("JPOS ") + std::to_string(a)); counter++;}  
-void Output::jzero(int a){programCode.push_back(std::string("JZERO ") + std::to_string(a)); counter++;}  
-void Output::jneg(int a){programCode.push_back(std::string("JNEG ") + std::to_string(a)); counter++;}  
+void Output::jump(long long a){programCode.push_back(std::string("JUMP ") + std::to_string(a)); counter++;}  
+void Output::jpos(long long a){programCode.push_back(std::string("JPOS ") + std::to_string(a)); counter++;}  
+void Output::jzero(long long a){programCode.push_back(std::string("JZERO ") + std::to_string(a)); counter++;}  
+void Output::jneg(long long a){programCode.push_back(std::string("JNEG ") + std::to_string(a)); counter++;}  
 void Output::halt(){
     programCode.push_back("HALT");
     printCode();

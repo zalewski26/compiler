@@ -183,7 +183,7 @@ union semrec
 {
 #line 25 "app/parser.ypp"
 
-    int num; /* Integer values */
+    long long num; /* Integer values */
     char* pidentifier; /* Identifiers */
     bool direction;
     struct lbs* lbls; /* For backpatching */

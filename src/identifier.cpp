@@ -13,7 +13,7 @@ Pidentifier::Pidentifier(std::string name){
     this->isIterator = d->isIterator;
 }
 
-arrIdentifier::arrIdentifier(std::string name, int num){
+arrIdentifier::arrIdentifier(std::string name, long long num){
     Declaration* d = declarations->context_check(name);
     if (!d->isArray){
         declarations->throwErr(name + " is not an array");

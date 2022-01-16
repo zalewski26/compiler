@@ -21,13 +21,13 @@ void Declarations::install(std::string name, bool isIterator){
     }
 }
 
-void Declarations::install(std::string name, int start, int end){
+void Declarations::install(std::string name, long long start, long long end){
     if (end < start)
         yyerror(std::string(name) + " has incorrect boundaries", 0);
     Declaration* d = getDeclaration(name);
     if (d == 0){
-        int length = end - start + 1;
-        int baseDiff = start - memoryCounter;
+        long long length = end - start + 1;
+        long long baseDiff = start - memoryCounter;
         declarations.push_back(new Declaration(name,memoryCounter, length, baseDiff));
         memoryCounter += length;
     }
