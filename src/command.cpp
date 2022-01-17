@@ -59,10 +59,14 @@ void RepeatCommand::run(){
 
 void ForCommand::run(){
     val1->load();
+    output->swap('h');
     pident->loadAddr();
-    output->store(registers->addr);
+    output->swap('h');
+    output->store('b');
     val2->load();
+    output->swap('h');
     limit->loadAddr();
+    output->swap('h');
     output->store('b');
 
     output->repeatPlaceholder();

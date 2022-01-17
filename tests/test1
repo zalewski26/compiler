@@ -1,10 +1,10 @@
 VAR
-    a,b,c,d
+    x,y,z
 BEGIN
-    READ a;
-    READ b;
-    c ASSIGN a DIV b;
-    d ASSIGN a MOD b;
-    WRITE c;
-    WRITE d;
+    READ x;
+    READ y;
+    z ASSIGN x DIV y;
+    WRITE z;
+    z ASSIGN x MOD y;
+    WRITE z;
 END

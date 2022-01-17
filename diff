@@ -1,0 +1,753 @@
+diff --git a/app/lexer.l b/app/lexer.l
+index 336b0dd..77d5157 100644
+--- a/app/lexer.l
++++ b/app/lexer.l
+@@ -4,6 +4,7 @@
+     #include "../parser.tab.hpp"
+     #include <string.h> 
+     #include <stdlib.h> 
++    #include <string>
+     int yylex();
+ %}
+ 
+@@ -49,7 +50,7 @@ GEQ             { return (GEQ); }
+ TO              {yylval.direction = false; return (direction); }
+ DOWNTO          {yylval.direction = true; return (direction); }
+ {pidentifier}   {yylval.pidentifier = (char*) strdup(yytext); return (pidentifier);}
+-{num}           {yylval.num = atoi(yytext); return(num);}
++{num}           {yylval.num = std::stoll(yytext); return(num);}
+ [ \t\n]+        ;
+ .               { return yytext[0]; }
+ %%
+\ No newline at end of file
+diff --git a/app/parser.ypp b/app/parser.ypp
+index 0ac2c62..722654f 100644
+--- a/app/parser.ypp
++++ b/app/parser.ypp
+@@ -23,7 +23,7 @@
+ 
+ %union semrec /* The Semantic Records */
+ {
+-    int num; /* Integer values */
++    long long num; /* Integer values */
+     char* pidentifier; /* Identifiers */
+     bool direction;
+     struct lbs* lbls; /* For backpatching */
+diff --git a/inc/types.hpp b/inc/types.hpp
+index 0e945dc..fe3282c 100644
+--- a/inc/types.hpp
++++ b/inc/types.hpp
+@@ -31,7 +31,7 @@ private:
+ public:
+     const char acc = 'a';
+     const char addr = 'b';
+-    int accVal, addrVal;
++    long long accVal, addrVal;
+     char registers[6] = {'c','d','e','f','g','h'};
+     int registersVal[6];
+ };
+@@ -42,9 +42,9 @@ private:
+     std::vector<std::string> programCode;
+     void printCode();
+     int counter = 0;
+-    std::stack<int> condJumpCount;
+-    std::stack<int> jumpCount;
+-    std::stack<int> repeatCount;
++    std::stack<long long> condJumpCount;
++    std::stack<long long> jumpCount;
++    std::stack<long long> repeatCount;
+ public:
+     void get();
+     void put();
+@@ -57,10 +57,10 @@ public:
+     void reset(char);
+     void inc(char);
+     void dec(char);
+-    void jump(int);
+-    void jpos(int);
+-    void jzero(int);
+-    void jneg(int);
++    void jump(long long);
++    void jpos(long long);
++    void jzero(long long);
++    void jneg(long long);
+     void halt(); 
+ 
+     void condJumpPlaceholder(std::string);
+@@ -76,12 +76,12 @@ public:
+ class Declarations{
+ private:
+     std::vector<Declaration*> declarations;
+-    int memoryCounter = 0;
++    long long memoryCounter = 0;
+ 
+     Declaration* getDeclaration(std::string name);
+ public:
+     void install(std::string name, bool isIterator=false);
+-    void install(std::string name, int start, int end);
++    void install(std::string name, long long start, long long end);
+     Declaration* context_check(std::string name);
+     void markAsInitialized(Identifier*);
+     void remove(std::string name);
+@@ -93,18 +93,18 @@ public:
+ class Declaration {
+ public:
+     std::string name;
+-    int pos;
+-    int length;
+-    int baseDiff;
++    long long pos;
++    long long length;
++    long long baseDiff;
+     bool isArray;
+     bool isIterator;
+     bool isInitialized;
+ 
+-    Declaration(std::string name, int pos, bool isIterator) 
++    Declaration(std::string name, long long pos, bool isIterator) 
+             : name(name), pos(pos), isIterator(isIterator) { 
+                 length = 1; baseDiff = 0; isArray = false; isInitialized = false;
+             }
+-    Declaration(std::string name, int pos, int length, int baseDiff) 
++    Declaration(std::string name, long long pos, long long length, long long baseDiff) 
+             : name(name), pos(pos), length(length), baseDiff(baseDiff) {
+                 isArray = true; isInitialized = false;
+             }
+@@ -247,11 +247,11 @@ public:
+ 
+ class numValue : public Value{
+ private:
+-    int value;
++    long long value;
+ public:
+-    numValue(int num) : value(num) {};
+-    int getValue() {return value;}
+-    void setValue(int value) {this->value = value;}
++    numValue(long long num) : value(num) {};
++    long long getValue() {return value;}
++    void setValue(long long value) {this->value = value;}
+     void load() override;
+ };
+ 
+@@ -271,7 +271,7 @@ public:
+ class Pidentifier : public Identifier {
+ private:
+     std::string name;
+-    int pos;
++    long long pos;
+ public:
+     Pidentifier(std::string);
+     void loadAddr();
+@@ -286,7 +286,7 @@ private:
+     numValue* baseDiff;
+     Value* index;
+ public:
+-    arrIdentifier(std::string, int);
++    arrIdentifier(std::string, long long);
+     arrIdentifier(std::string, std::string);
+     void loadAddr();
+     std::string getName(){
+diff --git a/lex.yy.c b/lex.yy.c
+index 91a7734..79de9a4 100644
+--- a/lex.yy.c
++++ b/lex.yy.c
+@@ -545,10 +545,11 @@ char *yytext;
+     #include "../parser.tab.hpp"
+     #include <string.h> 
+     #include <stdlib.h> 
++    #include <string>
+     int yylex();
+-#line 550 "lex.yy.c"
++#line 551 "lex.yy.c"
+ 
+-#line 552 "lex.yy.c"
++#line 553 "lex.yy.c"
+ 
+ #define INITIAL 0
+ #define COMMENT 1
+@@ -766,9 +767,9 @@ YY_DECL
+ 		}
+ 
+ 	{
+-#line 15 "app/lexer.l"
++#line 16 "app/lexer.l"
+ 
+-#line 772 "lex.yy.c"
++#line 773 "lex.yy.c"
+ 
+ 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
+ 		{
+@@ -837,207 +838,207 @@ do_action:	/* This label is used only to access EOF actions. */
+ 
+ case 1:
+ YY_RULE_SETUP
+-#line 16 "app/lexer.l"
++#line 17 "app/lexer.l"
+ {BEGIN(COMMENT);}
+ 	YY_BREAK
+ case 2:
+ YY_RULE_SETUP
+-#line 17 "app/lexer.l"
++#line 18 "app/lexer.l"
+ {BEGIN(INITIAL);}
+ 	YY_BREAK
+ case 3:
+ /* rule 3 can match eol */
+ YY_RULE_SETUP
+-#line 18 "app/lexer.l"
++#line 19 "app/lexer.l"
+ ;
+ 	YY_BREAK
+ case 4:
+ YY_RULE_SETUP
+-#line 19 "app/lexer.l"
++#line 20 "app/lexer.l"
+ {return (VAR); }
+ 	YY_BREAK
+ case 5:
+ YY_RULE_SETUP
+-#line 20 "app/lexer.l"
++#line 21 "app/lexer.l"
+ { return (_BEGIN); }
+ 	YY_BREAK
+ case 6:
+ YY_RULE_SETUP
+-#line 21 "app/lexer.l"
++#line 22 "app/lexer.l"
+ { return (ENDDO); }
+ 	YY_BREAK
+ case 7:
+ YY_RULE_SETUP
+-#line 22 "app/lexer.l"
++#line 23 "app/lexer.l"
+ { return (ENDWHILE); }
+ 	YY_BREAK
+ case 8:
+ YY_RULE_SETUP
+-#line 23 "app/lexer.l"
++#line 24 "app/lexer.l"
+ { return (ENDFOR); }
+ 	YY_BREAK
+ case 9:
+ YY_RULE_SETUP
+-#line 24 "app/lexer.l"
++#line 25 "app/lexer.l"
+ { return (END); }
+ 	YY_BREAK
+ case 10:
+ YY_RULE_SETUP
+-#line 25 "app/lexer.l"
++#line 26 "app/lexer.l"
+ { return (REPEAT);}
+ 	YY_BREAK
+ case 11:
+ YY_RULE_SETUP
+-#line 26 "app/lexer.l"
++#line 27 "app/lexer.l"
+ { return (UNTIL);}
+ 	YY_BREAK
+ case 12:
+ YY_RULE_SETUP
+-#line 27 "app/lexer.l"
++#line 28 "app/lexer.l"
+ { return (ASSIGN); }
+ 	YY_BREAK
+ case 13:
+ YY_RULE_SETUP
+-#line 28 "app/lexer.l"
++#line 29 "app/lexer.l"
+ { return (IF); }
+ 	YY_BREAK
+ case 14:
+ YY_RULE_SETUP
+-#line 29 "app/lexer.l"
++#line 30 "app/lexer.l"
+ { return (THEN); }
+ 	YY_BREAK
+ case 15:
+ YY_RULE_SETUP
+-#line 30 "app/lexer.l"
++#line 31 "app/lexer.l"
+ { return (ELSE); }
+ 	YY_BREAK
+ case 16:
+ YY_RULE_SETUP
+-#line 31 "app/lexer.l"
++#line 32 "app/lexer.l"
+ { return (ENDIF); }
+ 	YY_BREAK
+ case 17:
+ YY_RULE_SETUP
+-#line 32 "app/lexer.l"
++#line 33 "app/lexer.l"
+ { return (WHILE); }
+ 	YY_BREAK
+ case 18:
+ YY_RULE_SETUP
+-#line 33 "app/lexer.l"
++#line 34 "app/lexer.l"
+ { return (DO); }
+ 	YY_BREAK
+ case 19:
+ YY_RULE_SETUP
+-#line 34 "app/lexer.l"
++#line 35 "app/lexer.l"
+ { return (FOR); }
+ 	YY_BREAK
+ case 20:
+ YY_RULE_SETUP
+-#line 35 "app/lexer.l"
++#line 36 "app/lexer.l"
+ { return (FROM); }
+ 	YY_BREAK
+ case 21:
+ YY_RULE_SETUP
+-#line 36 "app/lexer.l"
++#line 37 "app/lexer.l"
+ { return (READ); }
+ 	YY_BREAK
+ case 22:
+ YY_RULE_SETUP
+-#line 37 "app/lexer.l"
++#line 38 "app/lexer.l"
+ { return (WRITE); }
+ 	YY_BREAK
+ case 23:
+ YY_RULE_SETUP
+-#line 38 "app/lexer.l"
++#line 39 "app/lexer.l"
+ { return (PLUS); }
+ 	YY_BREAK
+ case 24:
+ YY_RULE_SETUP
+-#line 39 "app/lexer.l"
++#line 40 "app/lexer.l"
+ { return (MINUS); }
+ 	YY_BREAK
+ case 25:
+ YY_RULE_SETUP
+-#line 40 "app/lexer.l"
++#line 41 "app/lexer.l"
+ { return (TIMES); }
+ 	YY_BREAK
+ case 26:
+ YY_RULE_SETUP
+-#line 41 "app/lexer.l"
++#line 42 "app/lexer.l"
+ { return (DIV); }
+ 	YY_BREAK
+ case 27:
+ YY_RULE_SETUP
+-#line 42 "app/lexer.l"
++#line 43 "app/lexer.l"
+ { return (MOD); }
+ 	YY_BREAK
+ case 28:
+ YY_RULE_SETUP
+-#line 43 "app/lexer.l"
++#line 44 "app/lexer.l"
+ { return (EQ); }
+ 	YY_BREAK
+ case 29:
+ YY_RULE_SETUP
+-#line 44 "app/lexer.l"
++#line 45 "app/lexer.l"
+ { return (NEQ); }
+ 	YY_BREAK
+ case 30:
+ YY_RULE_SETUP
+-#line 45 "app/lexer.l"
++#line 46 "app/lexer.l"
+ { return (LE); }
+ 	YY_BREAK
+ case 31:
+ YY_RULE_SETUP
+-#line 46 "app/lexer.l"
++#line 47 "app/lexer.l"
+ { return (GE); }
+ 	YY_BREAK
+ case 32:
+ YY_RULE_SETUP
+-#line 47 "app/lexer.l"
++#line 48 "app/lexer.l"
+ { return (LEQ); }
+ 	YY_BREAK
+ case 33:
+ YY_RULE_SETUP
+-#line 48 "app/lexer.l"
++#line 49 "app/lexer.l"
+ { return (GEQ); }
+ 	YY_BREAK
+ case 34:
+ YY_RULE_SETUP
+-#line 49 "app/lexer.l"
++#line 50 "app/lexer.l"
+ {yylval.direction = false; return (direction); }
+ 	YY_BREAK
+ case 35:
+ YY_RULE_SETUP
+-#line 50 "app/lexer.l"
++#line 51 "app/lexer.l"
+ {yylval.direction = true; return (direction); }
+ 	YY_BREAK
+ case 36:
+ YY_RULE_SETUP
+-#line 51 "app/lexer.l"
++#line 52 "app/lexer.l"
+ {yylval.pidentifier = (char*) strdup(yytext); return (pidentifier);}
+ 	YY_BREAK
+ case 37:
+ YY_RULE_SETUP
+-#line 52 "app/lexer.l"
+-{yylval.num = atoi(yytext); return(num);}
++#line 53 "app/lexer.l"
++{yylval.num = std::stoll(yytext); return(num);}
+ 	YY_BREAK
+ case 38:
+ /* rule 38 can match eol */
+ YY_RULE_SETUP
+-#line 53 "app/lexer.l"
++#line 54 "app/lexer.l"
+ ;
+ 	YY_BREAK
+ case 39:
+ YY_RULE_SETUP
+-#line 54 "app/lexer.l"
++#line 55 "app/lexer.l"
+ { return yytext[0]; }
+ 	YY_BREAK
+ case 40:
+ YY_RULE_SETUP
+-#line 55 "app/lexer.l"
++#line 56 "app/lexer.l"
+ ECHO;
+ 	YY_BREAK
+-#line 1041 "lex.yy.c"
++#line 1042 "lex.yy.c"
+ case YY_STATE_EOF(INITIAL):
+ case YY_STATE_EOF(COMMENT):
+ 	yyterminate();
+@@ -2055,5 +2056,5 @@ void yyfree (void * ptr )
+ 
+ #define YYTABLES_NAME "yytables"
+ 
+-#line 55 "app/lexer.l"
++#line 56 "app/lexer.l"
+ 
+diff --git a/main b/main
+index 1dadf51..cade02e 100755
+Binary files a/main and b/main differ
+diff --git a/parser.tab.cpp b/parser.tab.cpp
+index 8ad5768..8158ada 100644
+--- a/parser.tab.cpp
++++ b/parser.tab.cpp
+@@ -183,7 +183,7 @@ union semrec
+ {
+ #line 25 "app/parser.ypp"
+ 
+-    int num; /* Integer values */
++    long long num; /* Integer values */
+     char* pidentifier; /* Identifiers */
+     bool direction;
+     struct lbs* lbls; /* For backpatching */
+diff --git a/parser.tab.hpp b/parser.tab.hpp
+index 58e27e8..0df8ca2 100644
+--- a/parser.tab.hpp
++++ b/parser.tab.hpp
+@@ -100,7 +100,7 @@ union semrec
+ {
+ #line 25 "app/parser.ypp"
+ 
+-    int num; /* Integer values */
++    long long num; /* Integer values */
+     char* pidentifier; /* Identifiers */
+     bool direction;
+     struct lbs* lbls; /* For backpatching */
+diff --git a/src/declarations.cpp b/src/declarations.cpp
+index 2673996..5033ac5 100644
+--- a/src/declarations.cpp
++++ b/src/declarations.cpp
+@@ -21,13 +21,13 @@ void Declarations::install(std::string name, bool isIterator){
+     }
+ }
+ 
+-void Declarations::install(std::string name, int start, int end){
++void Declarations::install(std::string name, long long start, long long end){
+     if (end < start)
+         yyerror(std::string(name) + " has incorrect boundaries", 0);
+     Declaration* d = getDeclaration(name);
+     if (d == 0){
+-        int length = end - start + 1;
+-        int baseDiff = start - memoryCounter;
++        long long length = end - start + 1;
++        long long baseDiff = start - memoryCounter;
+         declarations.push_back(new Declaration(name,memoryCounter, length, baseDiff));
+         memoryCounter += length;
+     }
+diff --git a/src/expression.cpp b/src/expression.cpp
+index dc940b0..04fc486 100644
+--- a/src/expression.cpp
++++ b/src/expression.cpp
+@@ -86,8 +86,9 @@ void BinaryExpression::load(){
+                 output->reset('f');
+                 output->reset('c');
+                 
++                // załadowanie wartości bezwzględnych i ustawienie flag
+                 val2->load();
+-                output->jzero(85);
++                output->jzero(89);
+                 output->jpos(5);
+                 output->inc('h');
+                 output->swap('c');
+@@ -95,9 +96,6 @@ void BinaryExpression::load(){
+                 output->sub('c');
+                 output->swap('c');
+                 val1->load();
+-                output->sub('c');
+-                output->jneg(76);
+-                output->add('c');
+                 output->jzero(6);
+                 output->jpos(5);
+                 output->inc('g');
+@@ -105,35 +103,39 @@ void BinaryExpression::load(){
+                 output->reset('a');
+                 output->sub('d');
+                 output->swap('d');
+-                output->reset('e'); // LOOP START
++
++                // Początek pętli
++                output->reset('e');
+                 output->reset('a');
+                 output->add('c');
++                output->sub('d');
++                output->jneg(3);
++                output->jzero(2);
++                output->jump(23);       // dzielnik większy niż dzielna
++
++                output->inc('e');
++                output->reset('a'); // Druga pętla
++                output->add('c');
+                 output->shift('e');
+                 output->sub('d');
+                 output->jpos(3);
+                 output->inc('e');
+                 output->jump(-6);
++                output->reset('a'); // if koniec drugiej pętli
++                output->inc('a');
+                 output->dec('e');
++                output->shift('e');
++                output->add('f');
++                output->swap('f');
+                 output->reset('a');
+                 output->add('c');
+                 output->shift('e');
+-                output->swap('b');
++                output->swap('e');
+                 output->swap('d');
+-                output->sub('b');
+-                output->sub('c');
+-                output->swap('b');
+-                output->reset('a');
+-                output->add('b');
+-                output->add('c');
++                output->sub('e');
+                 output->swap('d');
+-                output->reset('a');
+-                output->inc('a');
+-                output->shift('e');
+-                output->add('f');
+-                output->swap('f');
+-                output->swap('b');
+-                output->jneg(2);
+                 output->jump(-28);
++
+                 output->reset('a');
+                 output->add('g');      // dzielna ?
+                 output->jpos(15);
+diff --git a/src/identifier.cpp b/src/identifier.cpp
+index 52b35ab..2fd41c0 100644
+--- a/src/identifier.cpp
++++ b/src/identifier.cpp
+@@ -13,7 +13,7 @@ Pidentifier::Pidentifier(std::string name){
+     this->isIterator = d->isIterator;
+ }
+ 
+-arrIdentifier::arrIdentifier(std::string name, int num){
++arrIdentifier::arrIdentifier(std::string name, long long num){
+     Declaration* d = declarations->context_check(name);
+     if (!d->isArray){
+         declarations->throwErr(name + " is not an array");
+@@ -40,10 +40,10 @@ arrIdentifier::arrIdentifier(std::string name, std::string ident){
+ void Pidentifier::loadAddr(){
+     output->reset(registers->addr);
+     registers->addrVal = 0;
+-    while (registers->addrVal < pos){
+-        output->inc(registers->addr);
+-        registers->addrVal++;
+-    }
++    numValue* temp = new numValue(pos);
++    temp->load();
++    output->swap('b');
++    delete temp;
+ }
+ 
+ void arrIdentifier::loadAddr(){
+diff --git a/src/output.cpp b/src/output.cpp
+index 70a491e..a82afab 100644
+--- a/src/output.cpp
++++ b/src/output.cpp
+@@ -2,7 +2,7 @@
+ #include <iostream>
+ 
+ void Output::printCode(){
+-    for (int i = 0; i < programCode.size(); i++){
++    for (long long i = 0; i < programCode.size(); i++){
+         // std::cout << "\033[1;34m " << i << "\033[0m " << programCode[i] << "\n";
+         std::cerr << programCode[i] << "\n";
+     }
+@@ -12,7 +12,7 @@ void Output::updateCondJump(int result){
+     for (int j = 0; j < result; j++){
+         int temp = counter - condJumpCount.top();
+         condJumpCount.pop();
+-        for (int i = programCode.size() - 1; i >= 0; i--){
++        for (long long i = programCode.size() - 1; i >= 0; i--){
+             if (programCode[i] == std::string("JZERO") || programCode[i] == std::string("JPOS") || programCode[i] == std::string("JNEG")){
+                 programCode[i] = programCode[i] + " "  + std::to_string(temp);
+                 break;
+@@ -22,9 +22,9 @@ void Output::updateCondJump(int result){
+ }
+ 
+ void Output::updateJump(){
+-    int temp = counter - jumpCount.top();
++    long long temp = counter - jumpCount.top();
+     jumpCount.pop();
+-    for (int i = programCode.size() - 1; i >= 0; i--){
++    for (long long i = programCode.size() - 1; i >= 0; i--){
+         if (programCode[i] == std::string("JUMP")){
+             programCode[i] = programCode[i] + " "  + std::to_string(temp);
+             break;
+@@ -33,10 +33,10 @@ void Output::updateJump(){
+ }
+ 
+ void Output::updateRepeat(int result){
+-    int temp = repeatCount.top();
++    long long temp = repeatCount.top();
+     repeatCount.pop();
+     for (int j = 0; j < result; j++){
+-        for (int i = programCode.size() - 1; i >= 0; i--){
++        for (long long i = programCode.size() - 1; i >= 0; i--){
+             if (programCode[i] == std::string("JZERO") || programCode[i] == std::string("JPOS") || programCode[i] == std::string("JNEG")){
+                 programCode[i] = programCode[i] + " "  + std::to_string(temp - i);
+                 break;
+@@ -46,7 +46,7 @@ void Output::updateRepeat(int result){
+ }
+ 
+ void Output::updateWhile(){
+-    int temp = repeatCount.top();
++    long long temp = repeatCount.top();
+     repeatCount.pop();
+     programCode.push_back(std::string("JUMP ") + std::to_string(temp - counter));
+     counter++;
+@@ -63,10 +63,10 @@ void Output::swap(char c){programCode.push_back(std::string("SWAP ") + c); count
+ void Output::reset(char c){programCode.push_back(std::string("RESET ") + c); counter++;}  
+ void Output::inc(char c){programCode.push_back(std::string("INC ") + c); counter++;}  
+ void Output::dec(char c){programCode.push_back(std::string("DEC ") + c); counter++;}  
+-void Output::jump(int a){programCode.push_back(std::string("JUMP ") + std::to_string(a)); counter++;}  
+-void Output::jpos(int a){programCode.push_back(std::string("JPOS ") + std::to_string(a)); counter++;}  
+-void Output::jzero(int a){programCode.push_back(std::string("JZERO ") + std::to_string(a)); counter++;}  
+-void Output::jneg(int a){programCode.push_back(std::string("JNEG ") + std::to_string(a)); counter++;}  
++void Output::jump(long long a){programCode.push_back(std::string("JUMP ") + std::to_string(a)); counter++;}  
++void Output::jpos(long long a){programCode.push_back(std::string("JPOS ") + std::to_string(a)); counter++;}  
++void Output::jzero(long long a){programCode.push_back(std::string("JZERO ") + std::to_string(a)); counter++;}  
++void Output::jneg(long long a){programCode.push_back(std::string("JNEG ") + std::to_string(a)); counter++;}  
+ void Output::halt(){
+     programCode.push_back("HALT");
+     printCode();
+diff --git a/src/program.cpp b/src/program.cpp
+index 17e050e..f7d220c 100644
+--- a/src/program.cpp
++++ b/src/program.cpp
+@@ -12,6 +12,6 @@ void Program::compile(){
+         command->run();
+     }
+     output->halt();
+-    // declarations->print();
++    declarations->print();
+ }
+ 
+diff --git a/src/value.cpp b/src/value.cpp
+index a18f816..bdd3e09 100644
+--- a/src/value.cpp
++++ b/src/value.cpp
+@@ -8,19 +8,19 @@ extern Output* output;
+ 
+ void idValue::load(){
+     ident->loadAddr();
+-    if (!declarations->context_check(ident->getName())->isInitialized)
++    if (!ident->isIterator && !declarations->context_check(ident->getName())->isInitialized)
+         declarations->throwErr(ident->getName() + " is uninitialized");
+     output->load(registers->addr);
+ }
+ 
+ void numValue::load(){
+     output->reset(registers->acc);
+-    if (std::abs(value) > 10){
++    if (std::llabs(value) > 10){
+         output->reset('b');
+         output->inc('b');
+         std::stack<int> commands;
+-        while (std::abs(value) != 1){
+-            if (std::abs(value % 2) == 1)
++        while (std::llabs(value) != 1){
++            if (std::llabs(value % 2) == 1)
+                 commands.push(INC_COMMAND);
+             commands.push(SHIFT_COMMAND);
+             value /= 2;
+@@ -49,12 +49,12 @@ void numValue::load(){
+     }
+     else {
+         if (value > 0) {
+-            for (int i = 0; i < value; i++) {
++            for (long long i = 0; i < value; i++) {
+                 output->inc(registers->acc);
+             }
+         } 
+         else {
+-            for (int i = value; i < 0; i++) {
++            for (long long i = value; i < 0; i++) {
+                 output->dec(registers->acc);
+             }
+         }
+diff --git a/tests/test1 b/tests/test1
+index 47689d2..2c0cc66 100644
+--- a/tests/test1
++++ b/tests/test1
+@@ -1,10 +1,10 @@
+ VAR
+-    a,b,c
++    a,b,c,d
+ BEGIN
+-    a ASSIGN 1;
+-    b ASSIGN a PLUS 1;
+-    c ASSIGN b PLUS 1;
+-    WRITE a;
+-    WRITE b;
++    READ a;
++    READ b;
++    c ASSIGN a DIV b;
++    d ASSIGN a MOD b;
+     WRITE c;
++    WRITE d;
+ END
+\ No newline at end of file
+diff --git a/tests/test5 b/tests/test5
+index 8716e09..13383f6 100644
+--- a/tests/test5
++++ b/tests/test5
+@@ -1,5 +1,5 @@
+ VAR
+-    a, b, c, d, e, f, g, h, x, i,j,k,l,m,n,o,p
++    a, b, c, d, e, f, g, h, x
+ BEGIN
+     READ a;
+     READ b;
