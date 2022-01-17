@@ -86,8 +86,9 @@ void BinaryExpression::load(){
                 output->reset('f');
                 output->reset('c');
                 
+                // załadowanie wartości bezwzględnych i ustawienie flag
                 val2->load();
-                output->jzero(85);
+                output->jzero(89);
                 output->jpos(5);
                 output->inc('h');
                 output->swap('c');
@@ -95,9 +96,6 @@ void BinaryExpression::load(){
                 output->sub('c');
                 output->swap('c');
                 val1->load();
-                output->sub('c');
-                output->jneg(76);
-                output->add('c');
                 output->jzero(6);
                 output->jpos(5);
                 output->inc('g');
@@ -105,35 +103,39 @@ void BinaryExpression::load(){
                 output->reset('a');
                 output->sub('d');
                 output->swap('d');
-                output->reset('e'); // LOOP START
+
+                // Początek pętli
+                output->reset('e');
                 output->reset('a');
+                output->add('c');
+                output->sub('d');
+                output->jneg(3);
+                output->jzero(2);
+                output->jump(23);       // dzielnik większy niż dzielna
+
+                output->inc('e');
+                output->reset('a'); // Druga pętla
                 output->add('c');
                 output->shift('e');
                 output->sub('d');
                 output->jpos(3);
                 output->inc('e');
                 output->jump(-6);
-                output->dec('e');
-                output->reset('a');
-                output->add('c');
-                output->shift('e');
-                output->swap('b');
-                output->swap('d');
-                output->sub('b');
-                output->sub('c');
-                output->swap('b');
-                output->reset('a');
-                output->add('b');
-                output->add('c');
-                output->swap('d');
-                output->reset('a');
+                output->reset('a'); // if koniec drugiej pętli
                 output->inc('a');
+                output->dec('e');
                 output->shift('e');
                 output->add('f');
                 output->swap('f');
-                output->swap('b');
-                output->jneg(2);
+                output->reset('a');
+                output->add('c');
+                output->shift('e');
+                output->swap('e');
+                output->swap('d');
+                output->sub('e');
+                output->swap('d');
                 output->jump(-28);
+
                 output->reset('a');
                 output->add('g');      // dzielna ?
                 output->jpos(15);
