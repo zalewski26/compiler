@@ -40,18 +40,10 @@ arrIdentifier::arrIdentifier(std::string name, std::string ident){
 void Pidentifier::loadAddr(){
     output->reset(registers->addr);
     registers->addrVal = 0;
-    if (std::llabs(pos) < 10){
-        while (registers->addrVal < pos){
-            output->inc(registers->addr);
-            registers->addrVal++;
-        }
-    }
-    else {
-        numValue* temp = new numValue(pos);
-        temp->load();
-        output->swap('b');
-        delete temp;
-    }
+    numValue* temp = new numValue(pos);
+    temp->load();
+    output->swap('b');
+    delete temp;
 }
 
 void arrIdentifier::loadAddr(){
