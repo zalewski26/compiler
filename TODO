@@ -11,8 +11,8 @@
     wyznaczających początek i koniec pętli) - zrobione    
 9) nie można zadeklarować tab[10:5] - zrobione
 10) użycie niezainicjowanej zmiennej - jest
+11) long long - zrobione
 
-11) long long
 12) wycieki pamięci
 
 ? Czy git że w lexie puszczam nierozpoznane?
