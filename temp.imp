@@ -1,4 +1,4 @@
-VAR
+VAR 
     x,y,z
 BEGIN
     READ x;
