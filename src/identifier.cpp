@@ -40,7 +40,7 @@ arrIdentifier::arrIdentifier(std::string name, std::string ident){
 void Pidentifier::loadAddr(){
     output->reset('b');
     registers->addrVal = 0;
-    printf("%lld\n", pos);
+    // printf("%lld\n", pos);
     numValue* temp = new numValue(pos);
     temp->load();
     output->swap('b');
