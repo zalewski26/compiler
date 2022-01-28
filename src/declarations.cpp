@@ -66,3 +66,9 @@ void Declarations::print(){
         std::cout << i->name << ": pos = " << i->pos << " length = " << i->length << " baseDiff = " << i->baseDiff << "\n"; 
     }
 }
+
+void Declarations::removeAll(){
+    for (auto i : declarations){
+        delete i;
+    }
+}

@@ -1,10 +1,15 @@
-VAR 
-    x,y,z
+VAR
+    j, k
 BEGIN
-    READ x;
-    READ y;
-    z ASSIGN x DIV y;
-    WRITE z;
-    z ASSIGN x MOD y;
-    WRITE z;
+    READ k;
+    FOR i FROM 1 TO k DO
+        IF i GE 1 THEN
+            j ASSIGN j TIMES 2;
+        ELSE
+            j ASSIGN 1;
+        ENDIF
+    ENDFOR
+    IF k GEQ 1 THEN
+        WRITE j;
+    ENDIF
 END

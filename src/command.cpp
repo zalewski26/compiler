@@ -109,3 +109,71 @@ void WriteCommand::run(){
     output->put();
 }
 
+void AssignCommand::remove(){
+    ident->remove();
+    exp->remove();
+    delete this;
+}
+
+void IfElseCommand::remove(){
+    cond->remove();
+    for (const auto &command : *cSet1) {
+        command->remove();
+    }
+    for (const auto &command : *cSet2) {
+        command->remove();
+    }
+    delete cSet1, cSet2;
+    delete this;
+}
+
+void IfCommand::remove(){
+    cond->remove();
+    for (const auto &command : *cSet) {
+        command->remove();
+    }
+    delete cSet;
+    delete this;
+}
+
+void WhileCommand::remove(){
+    cond->remove();
+    for (const auto &command : *cSet) {
+        command->remove();
+    }
+    delete cSet;
+    delete this;
+}
+
+void RepeatCommand::remove(){
+    cond->remove();
+    for (const auto &command : *cSet) {
+        command->remove();
+    }
+    delete cSet;
+    delete this;
+}
+
+void ForCommand::remove(){
+    pident->remove();
+    limit->remove();
+    val1->remove();
+    val2->remove();
+    for (const auto &command : *cSet) {
+        command->remove();
+    }
+    delete cSet;
+    delete this;
+}
+
+void ReadCommand::remove(){
+    ident->remove();
+    delete this;
+}
+
+void WriteCommand::remove(){
+    val->remove();
+    delete this;
+}
+
+

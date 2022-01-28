@@ -60,3 +60,12 @@ void numValue::load(){
         }
     }
 }
+
+void idValue::remove(){
+    ident->remove();
+    delete this;
+}
+
+void numValue::remove(){
+    delete this;
+}

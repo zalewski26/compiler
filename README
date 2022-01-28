@@ -1,0 +1,16 @@
+Paweł Zalewski, 254621, Informatyka Algorytmiczna, sem. 5.
+
+Kompilator prostego języka imperatywnego do kodu maszyny wirtualnej,
+zrealizowany na potrzeby kursu Języki formalne i techniki translacji 2021/2022. 
+
+Kompilator został napisany w języku C++, w głównym katalogu app znajduje się lexer oraz parser, 
+w katalogu inc są pliki nagłówkowe z zadeklarowanymi typami, a w katalogu src pliki definiujące klasy
+takie jak program, command, expression, pidentifier itp. niezbędne do prawidłowego działania programu.
+Aby skompilować projekt należy użyć polecenia 'make'.
+
+Wywołanie programu:
+./kompilator <nazwa pliku wejściowego> <nazwa pliku wyjściowego>
+
+Wywołanie 'python3 test.py' wykonuje wszystkie wymagane testy zamieszczone na stronie prowadzącego,
+wraz z informacją na temat wykonywanego programu lub oczekiwanym prawidłowym rozwiązaniem
+(pod warunkiem posiadania maszyny wirtualnej w katalogu obok o nazwie 'maszyna-wirtualna').

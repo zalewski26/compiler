@@ -23,6 +23,7 @@ private:
 public:
     Program(CommandSet* commands) : commands(commands){};
     void compile();
+    void remove();
 };
 
 /********** REGISTERS *****************/
@@ -87,6 +88,7 @@ public:
     void remove(std::string name);
     void throwErr(std::string, int correction=0);
     void print();
+    void removeAll();
 };
 
 /********** DECLARATION ***************/
@@ -114,6 +116,7 @@ public:
 class Command{
 public:
     virtual void run() {};
+    virtual void remove() {};
 };
 
 class AssignCommand : public Command{
@@ -123,6 +126,7 @@ private:
 public:
     AssignCommand(Identifier* ident, Expression* exp);
     void run() override;
+    void remove() override;
 };
 
 class IfElseCommand : public Command{
@@ -134,6 +138,7 @@ public:
     IfElseCommand(Condition* cond, CommandSet* cSet1, CommandSet* cSet2)
              : cond(cond), cSet1(cSet1), cSet2(cSet2) {}
     void run() override;
+    void remove() override;
 };
 
 class IfCommand : public Command{
@@ -142,6 +147,7 @@ class IfCommand : public Command{
 public:
     IfCommand(Condition* cond, CommandSet* cSet) : cond(cond), cSet(cSet) {}
     void run() override;
+    void remove() override;
 };
 
 class WhileCommand : public Command{
@@ -151,6 +157,7 @@ private:
 public:
     WhileCommand(Condition* cond, CommandSet* cSet) : cond(cond), cSet(cSet) {}
     void run() override;
+    void remove() override;
 };
 
 class RepeatCommand : public Command{
@@ -160,6 +167,7 @@ private:
 public:
     RepeatCommand(CommandSet* cSet, Condition* cond) : cSet(cSet), cond(cond){}
     void run() override;
+    void remove() override;
 };
 
 class ForCommand : public Command{
@@ -175,6 +183,7 @@ public:
     ForCommand(Pidentifier* pident, Pidentifier* limit, Value* v1, Value* v2, CommandSet* cSet, bool downTo)
         : pident(pident), limit(limit), val1(v1), val2(v2), cSet(cSet), downTo(downTo){}
     void run() override;
+    void remove() override;
 };
 
 class ReadCommand : public Command{
@@ -183,6 +192,7 @@ private:
 public:
     ReadCommand(Identifier* i) : ident(i) {}
     void run() override;
+    void remove() override;
 };
 
 class WriteCommand : public Command{
@@ -190,6 +200,7 @@ class WriteCommand : public Command{
 public:
     WriteCommand(Value* val) : val(val) {}
     void run() override;
+    void remove() override;
 };
 
 
@@ -197,6 +208,7 @@ public:
 class Expression{
 public:
     virtual void load(){};
+    virtual void remove() {};
 };
 
 class SingleExpression : public Expression{
@@ -205,6 +217,7 @@ private:
 public:	
     SingleExpression(Value* v) : val(v) {}
     void load() override;
+    void remove() override;
 };
 
 class BinaryExpression : public Expression{
@@ -215,6 +228,7 @@ private:
 public:
     BinaryExpression(Value* v1, Value* v2, Operations type) : val1(v1), val2(v2), type(type) {}
     void load() override;
+    void remove() override;
 };
 
 
@@ -228,6 +242,7 @@ public:
     Condition(Value* a, Value* b, Conditions type) : val1(a), val2(b), type(type){};
     int loadIf();
     int loadRepeat();
+    void remove();
 };
 
 
@@ -235,6 +250,7 @@ public:
 class Value{
 public:
     virtual void load(){};
+    virtual void remove() {};
 };
 
 class idValue : public Value{
@@ -243,6 +259,7 @@ private:
 public:
     idValue(Identifier* ident) : ident(ident) {};
     void load() override;
+    void remove() override;
 };
 
 class numValue : public Value{
@@ -253,6 +270,7 @@ public:
     long long getValue() {return value;}
     void setValue(long long value) {this->value = value;}
     void load() override;
+    void remove() override;
 };
 
 
@@ -266,6 +284,7 @@ public:
     virtual std::string getName(){
         return "base";
     };
+    virtual void remove() {};
 };
 
 class Pidentifier : public Identifier {
@@ -278,6 +297,7 @@ public:
     std::string getName(){
         return name;
     };
+    void remove() override;
 };
 
 class arrIdentifier : public Identifier {
@@ -292,6 +312,7 @@ public:
     std::string getName(){
         return name;
     };
+    void remove() override; 
 };
 
 #endif

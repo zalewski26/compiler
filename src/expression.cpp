@@ -197,3 +197,14 @@ void BinaryExpression::load(){
     }
     
 }
+
+void SingleExpression::remove(){
+    val->remove();
+    delete this;
+}
+
+void BinaryExpression::remove(){
+    val1->remove();
+    val2->remove();
+    delete this;
+}

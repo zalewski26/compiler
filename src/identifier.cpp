@@ -54,3 +54,13 @@ void arrIdentifier::loadAddr(){
     output->sub('e');
     output->swap('b');
 }
+
+void Pidentifier::remove(){
+    delete this;
+}
+
+void arrIdentifier::remove(){
+    baseDiff->remove();
+    index->remove();
+    delete this;
+}

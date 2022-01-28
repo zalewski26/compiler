@@ -12,6 +12,17 @@ void Program::compile(){
         command->run();
     }
     output->halt();
+    for (const auto &command : *this->commands) {
+        command->remove();
+    }
+    delete commands;
     // declarations->print();
+}
+
+void Program::remove(){
+    for (const auto &command : *this->commands) {
+        command->remove();
+    }
+    delete commands;
 }
 

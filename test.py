@@ -32,39 +32,39 @@ case = int(case)
 if case == 1:
     for i in range(0, 10):
         print('\033[93mOczekiwany błąd: ' + errors[i] + '\033[0m')
-        cmd = f'./main tests/error{i}.imp ../test.txt'
+        cmd = f'./kompilator tests/error{i}.imp ../test.txt'
         os.system(cmd)
         print("\n")
 
 elif case == 2:
     for i in range(0, 3):
         print('\033[93m' + programs1[i] + '\033[0m')
-        cmd = f'./main tests/program{i}.imp ../test.txt && ../maszyna_wirtualna/./maszyna-wirtualna ../test.txt'
+        cmd = f'./kompilator tests/program{i}.imp ../test.txt && ../maszyna_wirtualna/./maszyna-wirtualna ../test.txt'
         os.system(cmd)
         print("\n")
 
 elif case == 3:
     for i in range(0, 11):
         print('\033[93m' + programs2[i] + '\033[0m')
-        cmd = f'./main tests/{i}-*.imp ../test.txt && ../maszyna_wirtualna/./maszyna-wirtualna ../test.txt'
+        cmd = f'./kompilator tests/{i}-*.imp ../test.txt && ../maszyna_wirtualna/./maszyna-wirtualna ../test.txt'
         os.system(cmd)
         print("\n")
 
 elif case == 4:
     for i in range(0, 10):
         print('\033[93mOczekiwany błąd: ' + errors[i] + '\033[0m')
-        cmd = f'./main tests/error{i}.imp ../test.txt'
+        cmd = f'./kompilator tests/error{i}.imp ../test.txt'
         os.system(cmd)
         print("\n")
 
     for i in range(0, 3):
         print('\033[93m' + programs1[i] + '\033[0m')
-        cmd = f'./main tests/program{i}.imp ../test.txt && ../maszyna_wirtualna/./maszyna-wirtualna ../test.txt'
+        cmd = f'./kompilator tests/program{i}.imp ../test.txt && ../maszyna_wirtualna/./maszyna-wirtualna ../test.txt'
         os.system(cmd)
         print("\n")
 
     for i in range(0, 11):
         print('\033[93m' + programs2[i] + '\033[0m')
-        cmd = f'./main tests/{i}*.imp ../test.txt && ../maszyna_wirtualna/./maszyna-wirtualna ../test.txt'
+        cmd = f'./kompilator tests/{i}-*.imp ../test.txt && ../maszyna_wirtualna/./maszyna-wirtualna ../test.txt'
         os.system(cmd)
         print("\n")

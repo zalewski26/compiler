@@ -132,9 +132,16 @@ int main(int argc, char** argv){
     program->compile();
     printf("\033[1;34mCompiled successfully!\033[0m\n");
 
+    declarations->removeAll();
+    delete declarations, output, program, registers;
 }
 
 void yyerror(std::string error, int correction){
     std::cout << "\033[1;31merror at line " << yylineno + correction  << " :\033[0m " << error << "\n";
+    if (program){
+        program->remove();
+        declarations->removeAll();
+        delete declarations, output, program, registers;
+    }
     exit(1);
 }
