@@ -1,16 +1,14 @@
-Paweł Zalewski, 254621, Informatyka Algorytmiczna, sem. 5.
+Simple imperative language compiler for virtual machine code,
+realized for the purposes of the Formal Languages and Translation Techniques course at Wrocław University of Science and Technology.
 
-Kompilator prostego języka imperatywnego do kodu maszyny wirtualnej,
-zrealizowany na potrzeby kursu Języki formalne i techniki translacji 2021/2022. 
+The compiler was written in C++, there is a lexer and a parser in the main app directory,
+in the inc directory there are header files with declared types, and in the src directory there are class definition files
+such as program, command, expression, pidentifier, etc. necessary for the correct operation of the program.
+To compile the project, use the 'make' command.
 
-Kompilator został napisany w języku C++, w głównym katalogu app znajduje się lexer oraz parser, 
-w katalogu inc są pliki nagłówkowe z zadeklarowanymi typami, a w katalogu src pliki definiujące klasy
-takie jak program, command, expression, pidentifier itp. niezbędne do prawidłowego działania programu.
-Aby skompilować projekt należy użyć polecenia 'make'.
+Program call:
+./compiler <input file name> <output file name>
 
-Wywołanie programu:
-./kompilator <nazwa pliku wejściowego> <nazwa pliku wyjściowego>
-
-Wywołanie 'python3 test.py' wykonuje wszystkie wymagane testy zamieszczone na stronie prowadzącego,
-wraz z informacją na temat wykonywanego programu lub oczekiwanym prawidłowym rozwiązaniem
-(pod warunkiem posiadania maszyny wirtualnej w katalogu obok o nazwie 'maszyna-wirtualna').
+Calling 'python3 test.py' performs all the required tests posted on the tutor's page,
+along with information about the program being executed or the expected correct solution
+(provided you have a virtual machine in the next directory named 'virtual-machine').
