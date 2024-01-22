@@ -1,16 +1,43 @@
-Paweł Zalewski, 254621, Informatyka Algorytmiczna, sem. 5.
+# Simple Imperative Language Compiler
 
-Kompilator prostego języka imperatywnego do kodu maszyny wirtualnej,
-zrealizowany na potrzeby kursu Języki formalne i techniki translacji 2021/2022. 
+This project is a simple imperative language compiler targeting virtual machine code, developed for the Formal Languages and Translation Techniques course at Wrocław University of Science and Technology.
 
-Kompilator został napisany w języku C++, w głównym katalogu app znajduje się lexer oraz parser, 
-w katalogu inc są pliki nagłówkowe z zadeklarowanymi typami, a w katalogu src pliki definiujące klasy
-takie jak program, command, expression, pidentifier itp. niezbędne do prawidłowego działania programu.
-Aby skompilować projekt należy użyć polecenia 'make'.
+## Overview
 
-Wywołanie programu:
-./kompilator <nazwa pliku wejściowego> <nazwa pliku wyjściowego>
+The compiler is designed to translate a simple imperative language into a set of instructions executable by a virtual machine. It is implemented in C++ and features a lexer and parser in the main application directory. Header files declaring necessary types are located in the `inc` directory, while class definition files for components such as program, command, expression, pidentifier, and more are found in the `src` directory.
 
-Wywołanie 'python3 test.py' wykonuje wszystkie wymagane testy zamieszczone na stronie prowadzącego,
-wraz z informacją na temat wykonywanego programu lub oczekiwanym prawidłowym rozwiązaniem
-(pod warunkiem posiadania maszyny wirtualnej w katalogu obok o nazwie 'maszyna-wirtualna').
+## Compilation
+
+To compile the project, navigate to the project directory and use the `make` command:
+
+```sh
+make
+```
+
+This will produce the `compiler` executable.
+
+## Usage
+
+Once compiled, you can run the compiler using the following command:
+
+```sh
+./compiler <input file name> <output file name>
+```
+
+Replace `<input file name>` with the name of your source file and `<output file name>` with the desired output file for the virtual machine code.
+
+## Testing
+
+The `test.py` Python script is provided to run a suite of tests, which are detailed on the course tutor's page. To execute all the required tests and compare the output with the expected results, run:
+
+```sh
+python3 test.py
+```
+
+This assumes you have a virtual machine executable named `virtual-machine` in the adjacent directory.
+
+## Project Structure
+
+- `/main` - Contains the lexer and parser implementation.
+- `/inc` - Contains the header files with type declarations.
+- `/src` - Contains the implementation of classes required for the compiler's functionality.
