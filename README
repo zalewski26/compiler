@@ -41,3 +41,4 @@ This assumes you have a virtual machine executable named `virtual-machine` in th
 - `/main` - Contains the lexer and parser implementation.
 - `/inc` - Contains the header files with type declarations.
 - `/src` - Contains the implementation of classes required for the compiler's functionality.
+
